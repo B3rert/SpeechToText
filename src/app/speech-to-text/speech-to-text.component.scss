@@ -1,0 +1,53 @@
+
+.padding_20{
+    padding: 20px;
+}
+
+
+.form-floating{
+    padding-top: 40px;
+}
+.play-ico {
+    height: 30px;
+    width: 30px;
+    background: url(/assets/icons/play-circle-regular.svg) no-repeat 50%;
+    cursor: pointer;
+}
+
+.pause-ico{
+    height: 30px;
+    width: 30px;
+    background: url(/assets/icons/pause-circle-regular.svg) no-repeat 50%;
+    cursor: pointer;
+}
+
+.undo-ico{
+    height: 30px;
+    width: 30px;
+    background: url(/assets/icons/undo-alt-solid.svg) no-repeat 50%;
+    cursor: pointer;
+    
+}
+
+.delete-ico{
+    height: 30px;
+    width: 30px;
+    background: url(/assets/icons/trash-alt-regular.svg) no-repeat 50%;
+    cursor: pointer;
+    
+}
+
+.copy-ico{
+    height: 30px;
+    width: 30px;
+    background: url(/assets/icons/copy-regular.svg) no-repeat 50%;
+    cursor: pointer;
+    float: right;
+    
+}
+
+.ico_button {
+    margin-left: 10px;
+    border: none;
+    background-color: transparent;
+}

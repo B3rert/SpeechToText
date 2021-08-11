@@ -1,6 +1,38 @@
-<div style="margin: 100px;">
-    <h1>Voice recognition</h1>
-    <button style="margin: 10px;" (click)="startService()">Start</button>
-    <button style="margin: 10px;" (click)="stopService()">Stop</button>
-    <p>{{service.text}}</p>
+<div class="container">
+    <div class="center">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+
+
+                <div class="form-floating ">
+                    <textarea class="form-control" readonly placeholder="Leave a comment here" id="texto"
+                        style="height: 350px">{{service.text}}</textarea>
+                    <label for="floatingTextarea2" style="padding-top: 60px;">{{service.lastText}}</label>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 padding_20">
+
+                <button class="play-ico ico_button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Iniciar"
+                    (click)="startService()"></button>
+                <button class="pause-ico ico_button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Pausar"
+                    (click)="stopService()"></button>
+
+                <button class="undo-ico ico_button" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    title="Nueva Grabacion" (click)="restartService()"></button>
+                <button class="delete-ico ico_button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Eliminar"
+                    (click)="deleteText()"></button>
+
+
+
+                <button class="copy-ico ico_button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copiar"
+                    (click)="copyMessage()"></button>
+            </div>
+
+        </div>
+    </div>
 </div>

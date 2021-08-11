@@ -9,7 +9,7 @@ import { VoiceRecognitionService } from '../service/voice-recognition.service'
 })
 export class SpeechToTextComponent implements OnInit {
 
-  text: string;
+ 
 
   constructor(
     public service : VoiceRecognitionService
@@ -25,7 +25,37 @@ export class SpeechToTextComponent implements OnInit {
   }
 
   stopService(){
+    this.service.lastText = 'Reconocimiento de voz.';
     this.service.stop()
+  }
+
+  restartService(){
+    this.service.lastText = 'Reconocimiento de voz.';
+    this.service.stop();
+    this.service.clearRecord();
+    this.service.start();
+  }
+
+  copyMessage(){
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = this.service.text;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
+
+
+  deleteText(){
+    this.service.stop();
+    this.service.text = '';
+    this.service.lastText = 'Reconocimiento de voz.';
+
   }
 
 }
