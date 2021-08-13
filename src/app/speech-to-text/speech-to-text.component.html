@@ -5,7 +5,7 @@
 
 
                 <div class="form-floating ">
-                    <textarea class="form-control" readonly placeholder="Leave a comment here" id="texto"
+                    <textarea class="form-control" placeholder="Leave a comment here" id="texto" readonly
                         style="height: 350px">{{service.text}}</textarea>
                     <label for="floatingTextarea2" style="padding-top: 60px;">{{service.lastText}}</label>
                 </div>
@@ -24,14 +24,18 @@
 
                 <button class="undo-ico ico_button" data-bs-toggle="tooltip" data-bs-placement="bottom"
                     title="Nueva Grabacion" (click)="restartService()"></button>
-                <button class="delete-ico ico_button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Eliminar"
-                    (click)="deleteText()"></button>
+                <button class="delete-ico ico_button" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    title="Eliminar" (click)="deleteText()"></button>
 
-
-
+                <!--
+                    <button class="level_down ico_button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Saltar Línea"
+                    (click)="level_down()"></button>
+-->
                 <button class="copy-ico ico_button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copiar"
                     (click)="copyMessage()"></button>
+
             </div>
+
 
         </div>
     </div>
