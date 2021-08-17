@@ -94,8 +94,8 @@ export class VoiceRecognitionService {
   //Correccion de espacios en blanco
   correctText(text: string) {
     text = text.replace(/[ ]+/g, " ");
-    text = text.replace(/^ /, "");
-    text = text.replace(/ $/, "");
+    //text = text.replace(/^ /, "");
+    //text = text.replace(/ $/, "");
 
     return text;
   }
