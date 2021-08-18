@@ -9,8 +9,6 @@ import { VoiceRecognitionService } from '../service/voice-recognition.service'
 })
 export class SpeechToTextComponent implements OnInit {
 
- 
-
   constructor(
     public service : VoiceRecognitionService
   ) { 
@@ -50,12 +48,10 @@ export class SpeechToTextComponent implements OnInit {
     document.body.removeChild(selBox);
   }
 
-
   deleteText(){
     this.service.stop();
     this.service.text = '';
     this.service.lastText = 'Reconocimiento de voz.';
 
   }
-
 }

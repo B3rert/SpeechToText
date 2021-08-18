@@ -8,7 +8,6 @@ declare var webkitSpeechRecognition: any;
 })
 export class VoiceRecognitionService {
 
-
   recognition = new webkitSpeechRecognition();
   isStoppedSpeechRecog = false;
   public text = '';
@@ -27,17 +26,17 @@ export class VoiceRecognitionService {
         .map((result) => result[0])
         .map((result) => result.transcript)
         .join('');
-      this.tempWords = transcript;
-      //this.text = transcript;
 
-      //Numero de palabras escuchadas
+      this.tempWords = transcript;
+
+      //N palabras escuchadas
       var numWords = this.countString(transcript);
-      //numero de plabaras visbles
+      //N plabaras visbles
       var numWordsClient = 10;
 
       //si hay más de 10 palabaras, mostrar las ultimas 10
       if (numWords > numWordsClient) {
-        var __text = this.correctText(transcript);
+        var __text = this.correctText(transcript, 1);
         var _text_ = __text.split(' ', numWords);
         var aNew = _text_.slice(numWords - numWordsClient);
         var newText = '';
@@ -46,14 +45,12 @@ export class VoiceRecognitionService {
           newText = newText + aNew[i] + " ";
         }
 
-        // console.log(numWords + " " + newText);
         this.lastText = newText;
+
       } else {
-        // console.log(numWords + " " + transcript);
         this.lastText = transcript;
       }
 
-      //this.lastText = transcript;
       console.log(transcript);
     });
   }
@@ -81,43 +78,74 @@ export class VoiceRecognitionService {
   }
 
   wordConcat() {
+    //Agregar ; y saltos de linea
+    this.tempWords = this.tempWords.replace(/punto y coma/gi, ';');
+    this.tempWords = this.filterWords(this.tempWords);
+
     this.text = this.text + this.tempWords + ' ';
+
+    //Correccion de espacios entre signos
+    this.text = this.text.replace(/ ;/g, ';');
+    this.text = this.text.replace(/ ,/g, ',');
+    this.text = this.text.replace(/ \n/g, '\n');
+    this.text = this.text.replace(/\n /g, '\n');
+    this.text = this.text.replace(/ \n /g, '\n');
+
     this.tempWords = '';
-    this.text = this.correctText(this.text);
+    this.text = this.correctText(this.text, 1);
   }
 
+  //Limpiar texto
   clearRecord() {
     this.text = '';
   }
 
-
-  //Correccion de espacios en blanco
-  correctText(text: string) {
-    text = text.replace(/[ ]+/g, " ");
-    //text = text.replace(/^ /, "");
-    //text = text.replace(/ $/, "");
-
-    return text;
-  }
-
-  lineEnter() {
-    this.stop();
-    this.text += '\n';
+  correctText(text: string, opt: number) {
+    //elimina varios espacios 
+    if (opt == 1) {
+      text = text.replace(/[ ]+/g, " ");
+      return text;
+    } else if (opt == 2) { //Elimina espacios al final
+      text = text.replace(/[ ]+/g, " ");
+      text = text.replace(/^ /, "");
+      // text = text.replace(/ $/, "");
+      return text;
+    } else if (opt == 3) { //Elimina espacios al final, principio y de más
+      text = text.replace(/[ ]+/g, " ");
+      text = text.replace(/^ /, "");
+      text = text.replace(/ $/, "");
+      return text;
+    }
   }
 
   //devuelve numero de palabras de un string
   countString(text: string) {
     text = text.replace(/\r?\n/g, " ");
-    text = text.replace(/[ ]+/g, " ");
-    text = text.replace(/^ /, "");
-    text = text.replace(/ $/, "");
+    text = this.correctText(text,3);
     var _text = text.split(" ");
     var numWords = _text.length;
 
     return numWords;
   }
 
+  //Remplazar palabras 
+  filterWords(text: any) {
+    text = this.correctText(text, 3);
+    text = text.toLowerCase();
+    let _text = text.split(" ");
+
+    let finally_text = '';
+
+    _text.forEach(element => {
+      if (element == 'enter') {
+        finally_text = finally_text + '\n';
+      } else if (element == 'coma') {
+        finally_text = finally_text + ', ';
+      } else {
+        finally_text = finally_text + element + " ";
+      }
+    });
+
+    return finally_text;
+  }
 }
-
-
-//angular-voice-recognition\node_modules

@@ -1,7 +1,9 @@
 /*
 Cambiar ruta e accesos apara apuntar al servidor e alojamiento antes de assets
-Ejemplo: /assets/icons/play-circle-regular.svg 
+Ejemplo:
+remplazar /assets/icons/play-circle-regular.svg 
 por /dist/voice-reco/assets/icons/play-circle-regular.svg
+siendo /dist/voice-reco la carpeta donde está aojada la app
 */
 
 
@@ -13,47 +15,11 @@ por /dist/voice-reco/assets/icons/play-circle-regular.svg
 .form-floating{
     padding-top: 40px;
 }
-.play-ico {
-    height: 30px;
-    width: 30px;
-    background: url(/assets/icons/play-circle-regular.svg) no-repeat 50%;
-    cursor: pointer;
+
+.button_speech{
+    margin: 5px;
 }
 
-.pause-ico{
-    height: 30px;
-    width: 30px;
-    background: url(/assets/icons/pause-circle-regular.svg) no-repeat 50%;
-    cursor: pointer;
-}
-
-.undo-ico{
-    height: 30px;
-    width: 30px;
-    background: url(/assets/icons/undo-alt-solid.svg) no-repeat 50%;
-    cursor: pointer;
-    
-}
-
-.delete-ico{
-    height: 30px;
-    width: 30px;
-    background: url(/assets/icons/trash-alt-regular.svg) no-repeat 50%;
-    cursor: pointer;
-    
-}
-
-.copy-ico{
-    height: 30px;
-    width: 30px;
-    background: url(/assets/icons/copy-regular.svg) no-repeat 50%;
-    cursor: pointer;
+.button__end{
     float: right;
-    
-}
-
-.ico_button {
-    margin-left: 10px;
-    border: none;
-    background-color: transparent;
 }
