@@ -52,6 +52,5 @@ export class SpeechToTextComponent implements OnInit {
     this.service.stop();
     this.service.text = '';
     this.service.lastText = 'Reconocimiento de voz.';
-
   }
 }
