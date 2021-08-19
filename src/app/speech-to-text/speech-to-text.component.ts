@@ -9,6 +9,7 @@ import { VoiceRecognitionService } from '../service/voice-recognition.service'
 })
 export class SpeechToTextComponent implements OnInit {
  
+  service_start = false;
   service_on = false;
   text_button = 'Iniciar';
 
@@ -16,12 +17,21 @@ export class SpeechToTextComponent implements OnInit {
     public service : VoiceRecognitionService
   ) { 
     this.service.init()
+    if(service.text){
+    console.log("TEXTO EN PANTALLA: "+service.text);
+
+    }else{
+    console.log("FALSO: "+service.text);
+
+    }
    }
 
   ngOnInit(): void {
   }
 
   startService(){
+
+    this.service_start = true;
 
     if (this.service_on) {
       this.service_on = false;
@@ -45,14 +55,15 @@ export class SpeechToTextComponent implements OnInit {
     this.service.lastText = 'Reconocimiento de voz.';
     this.service.stop();
     
-    this.text_button = "Iniciar";
-    this.service_on = false;
+   // this.text_button = "Iniciar";
+    //this.service_on = false;
 
     this.service.clearRecord();
     this.service.start();
 
     this.text_button = "Pausar"
     this.service_on = true;
+    console.log("Llega hasta aqui");
 
   }
 

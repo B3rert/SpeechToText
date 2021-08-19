@@ -59,7 +59,7 @@ export class VoiceRecognitionService {
   }
 
   start() {
-    this.recognition.stop();
+    this.recognition.abort();
     this.isStoppedSpeechRecog = false;
     this.recognition.start();
     console.log("Reconocimineto de voz iniciado");
@@ -67,7 +67,7 @@ export class VoiceRecognitionService {
     this.text_button = "Pausar"
     this.recognition.addEventListener('end', (condition) => {
       if (this.isStoppedSpeechRecog) {
-        this.recognition.stop();
+        this.recognition.abort();
         console.log("Reconocimineto de voz finalizado")
         this.service_on = false;
         this.text_button = "Iniciar"
@@ -80,7 +80,7 @@ export class VoiceRecognitionService {
   stop() {
     this.isStoppedSpeechRecog = true;
     this.wordConcat();
-    this.recognition.stop();
+    this.recognition.abort();
     console.log("Reconocimineto de voz finalizado")
     this.service_on = false;
     this.text_button = "Iniciar";
