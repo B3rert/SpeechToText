@@ -58,11 +58,13 @@ export class VoiceRecognitionService {
     });
 
     this.recognition.onend = () => {
-      console.log("Se dejo de hablar");
+     // this.service_on = false;
+      //this.text_button = "Iniciar"
     }
 
     this.recognition.onerror = () => {
-      console.log('Ha ocurrido algun error');
+      this.service_on = false;
+        this.text_button = "Iniciar"
     }
   }
 

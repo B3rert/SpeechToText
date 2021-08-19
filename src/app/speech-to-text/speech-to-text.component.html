@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 padding_20">
                 <button class="button_speech" mat-stroked-button color="primary"
-                    (click)="startService()">{{text_button}}
+                    (click)="startService()">{{service.text_button}}
                 </button>
                 <button  class="button_speech" mat-stroked-button color="primary" (click)="restartService()">Nueva
                     Grabación</button>
@@ -27,7 +27,7 @@
 
         <div class="row">
             <div class="col">
-                <div *ngIf="service_on" class="listen_el">
+                <div *ngIf="service.service_on" class="listen_el">
                     <p class="listen_element">Escuchando...</p>
                     <div class="spinner-grow text-success color_point listen_element" role="status">
                         <span class="visually-hidden">Loading...</span>
