@@ -56,7 +56,17 @@ export class VoiceRecognitionService {
 
       console.log(transcript);
     });
+
+    this.recognition.onend = () => {
+      console.log("Se dejo de hablar");
+    }
+
+    this.recognition.onerror = () => {
+      console.log('Ha ocurrido algun error');
+    }
   }
+
+
 
   start() {
     this.recognition.abort();
@@ -126,6 +136,7 @@ export class VoiceRecognitionService {
       return text;
     }
   }
+
 
   //devuelve numero de palabras de un string
   countString(text: string) {
