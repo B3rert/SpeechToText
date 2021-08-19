@@ -57,18 +57,23 @@ export class VoiceRecognitionService {
       console.log(transcript);
     });
 
-    this.recognition.onend = () => {
-     // this.service_on = false;
-      //this.text_button = "Iniciar"
+    //Manejo de errores
+
+    //Se ha dejado de escuchar y se finaliza el servicio
+    this.recognition.onend = (e) => {
+      console.log('Se ha dejado de hablar');
+      this.service_on = false;
+      this.text_button = "Iniciar"
+      //console.log(e);
     }
 
-    this.recognition.onerror = () => {
+    //Ha ocurrido alfun error y se ha detenido el servicio
+    this.recognition.onerror = (e) => {
+      console.error('Algo salió mal, ERROR: ' + e.error);
       this.service_on = false;
-        this.text_button = "Iniciar"
+      this.text_button = "Iniciar";
     }
   }
-
-
 
   start() {
     this.recognition.abort();
@@ -86,6 +91,9 @@ export class VoiceRecognitionService {
       } else {
         this.wordConcat()
         this.recognition.start();
+        console.log("Reconocimineto de voz iniciado");
+        this.service_on = true;
+        this.text_button = "Pausar"
       }
     });
   }
@@ -97,6 +105,16 @@ export class VoiceRecognitionService {
     this.service_on = false;
     this.text_button = "Iniciar";
   }
+
+  restart() {
+    this.stop();
+    this.clearRecord();
+    this.start();
+    console.log("Reconocimineto de voz iniciado");
+    this.service_on = true;
+    this.text_button = "Pausar"
+  }
+
 
   wordConcat() {
     //Agregar ; y saltos de linea
