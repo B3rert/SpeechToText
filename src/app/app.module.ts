@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 
 //Angular material
 import {MatButtonModule} from '@angular/material/button';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,7 +22,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

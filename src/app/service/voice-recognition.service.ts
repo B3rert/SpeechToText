@@ -10,9 +10,12 @@ export class VoiceRecognitionService {
 
   recognition = new webkitSpeechRecognition();
   isStoppedSpeechRecog = false;
-  public text = '';
-  public lastText = 'Reconocimiento de voz.';
-  tempWords;
+  public text: string = '';
+  public lastText: string = 'Reconocimiento de voz.';
+  tempWords: string;
+  //Manejar Acciones (Grabando o no)
+  service_on = false;
+  text_button = 'Iniciar';
 
   constructor() { }
 
@@ -59,11 +62,15 @@ export class VoiceRecognitionService {
     this.recognition.stop();
     this.isStoppedSpeechRecog = false;
     this.recognition.start();
-    console.log("Reconocimineto de voz iniciado")
+    console.log("Reconocimineto de voz iniciado");
+    this.service_on = true;
+    this.text_button = "Pausar"
     this.recognition.addEventListener('end', (condition) => {
       if (this.isStoppedSpeechRecog) {
         this.recognition.stop();
         console.log("Reconocimineto de voz finalizado")
+        this.service_on = false;
+        this.text_button = "Iniciar"
       } else {
         this.wordConcat()
         this.recognition.start();
@@ -72,9 +79,11 @@ export class VoiceRecognitionService {
   }
   stop() {
     this.isStoppedSpeechRecog = true;
-    this.wordConcat()
+    this.wordConcat();
     this.recognition.stop();
     console.log("Reconocimineto de voz finalizado")
+    this.service_on = false;
+    this.text_button = "Iniciar";
   }
 
   wordConcat() {
@@ -121,7 +130,7 @@ export class VoiceRecognitionService {
   //devuelve numero de palabras de un string
   countString(text: string) {
     text = text.replace(/\r?\n/g, " ");
-    text = this.correctText(text,3);
+    text = this.correctText(text, 3);
     var _text = text.split(" ");
     var numWords = _text.length;
 

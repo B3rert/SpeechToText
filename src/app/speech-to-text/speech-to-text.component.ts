@@ -8,6 +8,9 @@ import { VoiceRecognitionService } from '../service/voice-recognition.service'
   providers: [VoiceRecognitionService]
 })
 export class SpeechToTextComponent implements OnInit {
+ 
+  service_on = false;
+  text_button = 'Iniciar';
 
   constructor(
     public service : VoiceRecognitionService
@@ -19,7 +22,18 @@ export class SpeechToTextComponent implements OnInit {
   }
 
   startService(){
+
+    if (this.service_on) {
+      this.service_on = false;
+      this.text_button = "Iniciar";
+      this.service.stop();
+    }else{
+      
+    this.service_on  = true;
+    this.text_button = "Pausar"
     this.service.start()
+    }
+
   }
 
   stopService(){
@@ -30,8 +44,16 @@ export class SpeechToTextComponent implements OnInit {
   restartService(){
     this.service.lastText = 'Reconocimiento de voz.';
     this.service.stop();
+    
+    this.text_button = "Iniciar";
+    this.service_on = false;
+
     this.service.clearRecord();
     this.service.start();
+
+    this.text_button = "Pausar"
+    this.service_on = true;
+
   }
 
   copyMessage(){
@@ -52,5 +74,7 @@ export class SpeechToTextComponent implements OnInit {
     this.service.stop();
     this.service.text = '';
     this.service.lastText = 'Reconocimiento de voz.';
+    this.text_button = "Iniciar";
+    this.service_on = false;
   }
 }
