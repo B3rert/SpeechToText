@@ -1,16 +1,6 @@
-/*
-Cambiar ruta e accesos apara apuntar al servidor e alojamiento antes de assets
-Ejemplo:
-remplazar /assets/icons/play-circle-regular.svg 
-por /dist/voice-reco/assets/icons/play-circle-regular.svg
-siendo /dist/voice-reco la carpeta donde está aojada la app
-*/
-
-
 .padding_20{
     padding-top: 20px;
 }
-
 
 .form-floating{
     padding-top: 40px;
@@ -37,7 +27,27 @@ siendo /dist/voice-reco la carpeta donde está aojada la app
     float: left;
 }
 
-
 .listen_el{
     padding-left: 5px;
+}
+
+.img_empresas{
+    height: 100px;
+    margin: 20px;
+}
+
+
+
+@media screen and (max-width: 600px) {
+    .img_empresas {
+        height: 65px;
+    margin: 10px;
+    }
+}
+
+@media screen and (max-width: 280px) {
+    .img_empresas {
+        height: 45px;
+    margin: 5px;
+    }
 }
