@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>{{data.tittle}}</h2>
+<mat-dialog-content class="mat-typography">
+    <label id="example-radio-group-label">{{data.description}}</label>
+    <mat-radio-group
+      aria-labelledby="example-radio-group-label"
+      class="example-radio-group"
+      [(ngModel)]="favoriteSeason">
+      <mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season">
+        {{season}}
+      </mat-radio-button>
+    </mat-radio-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false">{{data.falso}}</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="savePrintDefault()">{{data.verdadero}}</button>
+</mat-dialog-actions>

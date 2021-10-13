@@ -1,17 +1,16 @@
 <!--Logos, en caso de cambiarlos cambiar la imagen fuera de la carpeta dist de produccion-->
 <!--Para entornos de desarrollo no hay logos disponibles-->
-<!--
+
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <img class="img_empresas rounded float-start" src="/speechApp/img/empresa_logo.jfif" alt="Logo">
+            <img class="img_empresas rounded float-start" src="/app/img/empresa_logo.jfif" alt="Logo">
         </div>
         <div class="col">
-            <img class=" img_empresas rounded float-end" src="/speechApp/img/demosoft.jfif" alt="Logo">
+            <img class=" img_empresas rounded float-end" src="/app/img/demosoft.jfif" alt="Logo">
         </div>
     </div>
 </div>
--->
 <div class="container">
     <div class="center">
 
@@ -36,6 +35,10 @@
                     (click)="deleteText()">Eliminar</button>
                 <button class="button_speech button__end" mat-stroked-button color="primary"
                     (click)="copyMessage()">Copiar</button>
+                    <button class="button_speech button__end" mat-stroked-button color="primary"
+                    (click)="generarPDF()">Imprimir</button>
+                    
+                    
             </div>
         </div>
 
