@@ -6,17 +6,11 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogOptionComponent } from '../component/dialog/dialog-option/dialog-option.component';
-import { Observable } from 'rxjs';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { HttpClient } from '@angular/common/http';
 
-interface CertificateSubmissionResult {
-  fileName: string;
-  fileSize: number;
-}
 
 @Component({
   selector: 'app-speech-to-text',
@@ -48,9 +42,7 @@ export class SpeechToTextComponent implements OnInit {
   logo_desarrollador: any;
   imageBase64: any;
 
-
   constructor(
-
     public service: VoiceRecognitionService,
     private _printService: PrintService,
     private dialog: MatDialog,
@@ -64,9 +56,11 @@ export class SpeechToTextComponent implements OnInit {
     this.service.init();
     this.loadData();
   }
+  
+  ngOnInit(): void {
+  }
 
-
-
+  //Inicializa de froma asincrona las funciones necesarias
   async loadData() {
     await this.getConnection();
     if (this.service_print_on != 1) {
@@ -77,9 +71,8 @@ export class SpeechToTextComponent implements OnInit {
     }
   }
 
-
+  //Guarda el nombre del emisor
   saveName() {
-
     if (this.name) {
       this.save_name = true;
       localStorage.setItem("name", this.name);
@@ -88,13 +81,12 @@ export class SpeechToTextComponent implements OnInit {
     }
   }
 
+  //Muestra el input para esitar el nombre del emisor
   editName() {
     this.save_name = false;
   }
 
-  ngOnInit(): void {
-  }
-
+  //Convierte una imagen dada en base64 la gurada en imageBase64
   async generateBase64(source: string): Promise<void> {
     this.imageBase64 = "";
     return new Promise((resolve, reject) => {
@@ -107,15 +99,16 @@ export class SpeechToTextComponent implements OnInit {
             //   console.log(base64data);
             resolve();
           }
-
           reader.readAsDataURL(res);
           //console.log(res);
         });
     });
   }
 
+  //Genera un PDF
   async generarPDF() {
 
+    //Logos convertidos a base64
     await this.generateBase64('/assets/img/empresa_logo.jpg');
     this.logo_empresa = this.imageBase64;
 
@@ -123,6 +116,7 @@ export class SpeechToTextComponent implements OnInit {
     this.logo_desarrollador = this.imageBase64;
     // this.stopService();
 
+    //Cuerpo del pdf
     const pdfDefinition: any = {
       content: [
         {
@@ -142,100 +136,98 @@ export class SpeechToTextComponent implements OnInit {
       ]
     }
 
+    //crea un pdf
     const pdf = pdfMake.createPdf(pdfDefinition);
 
-
+    /*Conprueba si PrintService esta activo
+    *Si está activo se usan las funciones del servicio
+    *sino se hace una impresion nativa
+    */
     if (pdfDefinition.content[1].text) {
       await this.getConnection();
       if (this.service_print_on != 1) {
         pdf.print();
       } else {
+        await this.getPrinter();
         this.printPDf();
       }
     } else {
       alert("No hay texto que imprimir");
     }
-
-
-
     //pdf.open();
-
   }
 
 
+  //Imprime a través de print service
   printPDf() {
+    //Muestra dialogo con las impresoras unstaladas
     const dialogRef = this.dialog.open(DialogOptionComponent, {
       data: {
         description: "Impresoras instaladas:",
         options: this.printers
       }
     });
+
+    //Obtiene i la opcion fue "Aceptar"
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         //imprimir
-
         let printer = localStorage.getItem("print");
+
+        //Parametros necesarios para imprimir <<Api print en PritService>>
         let settings: DataPrint = {
-          "printer": printer,
-          "doc": `${this.name}\n\n${this.service.text}`,
-          "copies": 1
+          "printer": printer, //Nombre de la impresora
+          "doc": `${this.name}\n\n${this.service.text}`, //Texto del documento
+          "copies": 1 //Numero de copias
         }
 
-        console.log(settings);
-
+        //Consumo api para imprimir, falta controlar respuestas
         this._printService.postPrintText(settings).subscribe(
           res => {
             console.log(res);
-
-
           },
           err => {
             console.error(err);
-
-
           }
         );
-
       }
     });
-
-
   }
 
+  //Confirmar conexion con PrintService
   async getConnection(): Promise<void> {
     return new Promise((resolve, reject) => {
       this._printService.getConnection().subscribe(
         res => {
           this.service_print_on = <number>res;
           resolve();
-
         },
         err => {
           this.service_print_on = 0;
+          console.error(err);
           resolve();
-
         }
       );
     });
   }
 
+  //Consumo api para imprimir
   async postPrint(settings: DataPrint): Promise<void> {
     return new Promise((resolve, reject) => {
       this._printService.postPrintText(settings).subscribe(
         res => {
           console.log(res);
           resolve();
-
         },
         err => {
           console.error(err);
           resolve();
-
         }
       );
     });
   }
 
+  //Obtinene una lista de impresoras instaladas en la maquina
   async getPrinter(): Promise<void> {
     return new Promise((resolve, reject) => {
       this._printService.getPrinters().subscribe(
@@ -243,54 +235,42 @@ export class SpeechToTextComponent implements OnInit {
           console.log(res);
           this.printers = <string[]>res;
           resolve();
-
         },
         err => {
           console.error(err);
           resolve();
-
         }
       );
     });
   }
 
-
+  //inicia el servicio que estrá escuchando todo lo que el microfono capte
   startService() {
-
     this.service_start = true;
-
     if (this.service_on) {
       this.service_on = false;
       this.text_button = "Iniciar";
       this.service.stop();
     } else {
-
       this.service_on = true;
       this.text_button = "Pausar"
       this.service.start()
     }
-
   }
 
+  //Detiene el servicio  del reconocimiento voz
   stopService() {
     this.service.lastText = 'Reconocimiento de voz.';
     this.service.stop()
   }
 
+  //Reinicia el servicio del reconocimiento de voz
   restartService() {
     this.service.lastText = 'Reconocimiento de voz.';
     this.service.restart();
-    //this.service.stop();
-
-    // this.text_button = "Iniciar";
-    //this.service_on = false;
-
-    //this.service.clearRecord();
-    //this.service.start();
-
-
   }
 
+  //Copia el texto que se ha reconocido al portapapeles
   copyMessage() {
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
@@ -305,6 +285,7 @@ export class SpeechToTextComponent implements OnInit {
     document.body.removeChild(selBox);
   }
 
+  //elimina el texto que se ha reconocido 
   deleteText() {
     this.service.stop();
     this.service.text = '';
