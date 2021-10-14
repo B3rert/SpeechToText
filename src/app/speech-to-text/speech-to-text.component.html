@@ -10,7 +10,44 @@
             <img class=" img_empresas rounded float-end" src="/app/img/demosoft.jfif" alt="Logo">
         </div>
     </div>
+
 </div>
+<!--d-flex-->
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+            <form userName="ngForm" (ngSubmit)="saveName()" *ngIf="!save_name">
+                <mat-form-field class="neme_user" appearance="fill">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput name="user" #user="ngModel" [(ngModel)]="name">
+                </mat-form-field>
+                <button mat-icon-button color="primary" class="chekk_icon" type="submit">
+                    <mat-icon>
+                        <fa-icon [icon]="faCheck"></fa-icon>
+                    </mat-icon>
+                </button>
+            </form>
+
+            <div class="d-flex" *ngIf="save_name">
+                <div class="nombre_user_selected">
+                    <p>Emisor: {{name}}</p>
+                </div>
+                <button mat-icon-button color="primary" class="chekk_icon" (click)="editName()">
+                    <mat-icon>
+                        <fa-icon [icon]="faEdit"></fa-icon>
+                    </mat-icon>
+                </button>
+              </div>
+
+        </div>
+       
+
+    </div>
+
+   
+</div>
+
 <div class="container">
     <div class="center">
 
@@ -19,7 +56,7 @@
                 <div class="form-floating ">
                     <textarea class="form-control" placeholder="Leave a comment here" id="texto" readonly
                         style="height: 350px">{{service.text}}</textarea>
-                    <label for="floatingTextarea2" style="padding-top: 60px;">{{service.lastText}}</label>
+                    <label for="floatingTextarea2">{{service.lastText}}</label>
                 </div>
             </div>
         </div>
@@ -35,10 +72,10 @@
                     (click)="deleteText()">Eliminar</button>
                 <button class="button_speech button__end" mat-stroked-button color="primary"
                     (click)="copyMessage()">Copiar</button>
-                    <button class="button_speech button__end" mat-stroked-button color="primary"
+                <button class="button_speech button__end" mat-stroked-button color="primary"
                     (click)="generarPDF()">Imprimir</button>
-                    
-                    
+
+
             </div>
         </div>
 

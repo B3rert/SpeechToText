@@ -2,9 +2,7 @@
     padding-top: 20px;
 }
 
-.form-floating{
-    padding-top: 40px;
-}
+
 
 .button_speech{
     margin: 5px;
@@ -33,7 +31,9 @@
 
 .img_empresas{
     height: 100px;
-    margin: 20px;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
 }
 
 
@@ -50,4 +50,21 @@
         height: 45px;
     margin: 5px;
     }
+}
+
+/*Nombre de usuario*/
+.neme_user{
+    width: 200px;
+    margin: 0;
+    padding: 0;
+}
+
+.chekk_icon{
+    margin-bottom: 50px;
+}
+
+.nombre_user_selected{
+    padding-top: 10px;
+    margin-right: 5px;
+    color: #3f51b5;
 }

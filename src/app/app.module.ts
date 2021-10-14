@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from "@angular/common/http";
 import { FormsModule } from '@angular/forms';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 //Angular material
 
 //angularMaterial
@@ -63,6 +63,7 @@ import { DialogOptionComponent } from './component/dialog/dialog-option/dialog-o
     DialogOptionComponent
   ],
   imports: [
+    FontAwesomeModule,
     HttpClientModule,
     BrowserModule,
     FormsModule,
@@ -119,7 +120,7 @@ import { DialogOptionComponent } from './component/dialog/dialog-option/dialog-o
     MatTreeModule,
     OverlayModule,
     PortalModule,
-    ScrollingModule,
+    ScrollingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
