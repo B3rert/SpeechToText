@@ -60,6 +60,11 @@ export class SpeechToTextComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  editContentPrint(){
+   
+    
+  }
+
   //Inicializa de froma asincrona las funciones necesarias
   async loadData() {
     await this.getConnection();

@@ -10,13 +10,11 @@
             <img class=" img_empresas rounded float-end" src="/app/img/demosoft.jfif" alt="Logo">
         </div>
     </div>
-
 </div>
-<!--d-flex-->
-<div class="container">
+
+<div class="container" style="padding-top: 20px;">
     <div class="row">
         <div class="col">
-
             <form userName="ngForm" (ngSubmit)="saveName()" *ngIf="!save_name">
                 <mat-form-field class="neme_user" appearance="fill">
                     <mat-label>Nombre</mat-label>
@@ -28,7 +26,6 @@
                     </mat-icon>
                 </button>
             </form>
-
             <div class="d-flex" *ngIf="save_name">
                 <div class="nombre_user_selected">
                     <p>Emisor: {{name}}</p>
@@ -38,19 +35,13 @@
                         <fa-icon [icon]="faEdit"></fa-icon>
                     </mat-icon>
                 </button>
-              </div>
-
+            </div>
         </div>
-       
-
     </div>
-
-   
 </div>
 
 <div class="container">
     <div class="center">
-
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
                 <div class="form-floating ">
@@ -60,7 +51,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 padding_20">
                 <button class="button_speech" mat-stroked-button color="primary"
@@ -74,11 +64,10 @@
                     (click)="copyMessage()">Copiar</button>
                 <button class="button_speech button__end" mat-stroked-button color="primary"
                     (click)="generarPDF()">Imprimir</button>
-
-
+                    <button class="button_speech button__end" mat-stroked-button color="primary"
+                    (click)="editContentPrint()">Editar</button>
             </div>
         </div>
-
         <div class="row">
             <div class="col">
                 <div *ngIf="service.service_on" class="listen_el">

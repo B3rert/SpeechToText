@@ -60,7 +60,7 @@ import { DialogOptionComponent } from './component/dialog/dialog-option/dialog-o
   declarations: [
     AppComponent,
     SpeechToTextComponent,
-    DialogOptionComponent
+    DialogOptionComponent,
   ],
   imports: [
     FontAwesomeModule,

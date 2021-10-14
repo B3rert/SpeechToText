@@ -6,3 +6,12 @@ export interface DialogData{
     falso:string,
     options?:any
 }
+
+
+export interface DialogEditText{
+    tittle:string,
+    description:string,
+    verdadero:string,
+    falso:string,
+    text:string
+}
