@@ -1,14 +1,23 @@
-<h2 mat-dialog-title>{{data.tittle}}</h2>
+
 <mat-dialog-content class="mat-typography">
-    <label id="example-radio-group-label">{{data.description}}</label>
-    <mat-radio-group
-      aria-labelledby="example-radio-group-label"
-      class="example-radio-group"
-      [(ngModel)]="favoriteSeason">
-      <mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season">
-        {{season}}
-      </mat-radio-button>
-    </mat-radio-group>
+  <mat-form-field class="example-radio-group" appearance="fill">
+    <mat-label>Copias</mat-label>
+    <input type="number" matInput name="user" #user="ngModel" [(ngModel)]="copies" min="1">
+  </mat-form-field>
+  <label id="example-radio-group-label">{{data.description}}</label>
+  <mat-form-field class="example-radio-group" appearance="fill">
+    <mat-label>Impresora</mat-label>
+    <mat-select [(ngModel)]="selectedValue" name="food">
+      <mat-option *ngFor="let food of foods" [value]="food.value">
+        {{food.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-radio-group color="primary" aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="favoriteSeason">
+    <mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season">
+      {{season}}
+    </mat-radio-button>
+  </mat-radio-group>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="false">{{data.falso}}</button>
