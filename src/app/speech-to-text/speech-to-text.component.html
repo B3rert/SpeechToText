@@ -45,8 +45,7 @@
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
                 <div class="form-floating ">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="texto" readonly
-                        style="height: 350px">{{service.text}}</textarea>
+                    <textarea class="form-control" placeholder="Leave a comment here" id="texto" style="height: 350px" [(ngModel)]="service.text"></textarea>
                     <label for="floatingTextarea2">{{service.lastText}}</label>
                 </div>
             </div>
@@ -64,8 +63,6 @@
                     (click)="copyMessage()">Copiar</button>
                 <button class="button_speech button__end" mat-stroked-button color="primary"
                     (click)="generarPDF()">Imprimir</button>
-                    <button class="button_speech button__end" mat-stroked-button color="primary"
-                    (click)="editContentPrint()">Editar</button>
             </div>
         </div>
         <div class="row">

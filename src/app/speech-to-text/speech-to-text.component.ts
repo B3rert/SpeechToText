@@ -60,11 +60,6 @@ export class SpeechToTextComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  editContentPrint(){
-   
-    
-  }
-
   //Inicializa de froma asincrona las funciones necesarias
   async loadData() {
     await this.getConnection();
@@ -237,7 +232,6 @@ export class SpeechToTextComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this._printService.getPrinters().subscribe(
         res => {
-          console.log(res);
           this.printers = <string[]>res;
           resolve();
         },
