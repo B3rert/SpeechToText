@@ -10,7 +10,10 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { HttpClient } from '@angular/common/http';
-
+/***/
+import * as $ from 'jquery';
+import { GenericAcceptDialogComponent } from '../component/dialog/generic-accept-dialog/generic-accept-dialog.component';
+/** */
 
 @Component({
   selector: 'app-speech-to-text',
@@ -42,12 +45,20 @@ export class SpeechToTextComponent implements OnInit {
   logo_desarrollador: any;
   imageBase64: any;
 
+  btn_copy = false;
+  lang:any;
+
+
   constructor(
     public service: VoiceRecognitionService,
     private _printService: PrintService,
     private dialog: MatDialog,
     private http: HttpClient
   ) {
+
+    this.lang = service.languages;
+    console.log(this.lang);
+    
     let name = localStorage.getItem("name");
     if (name) {
       this.name = name;
@@ -56,7 +67,7 @@ export class SpeechToTextComponent implements OnInit {
     this.service.init();
     this.loadData();
   }
-  
+
   ngOnInit(): void {
   }
 
@@ -163,7 +174,8 @@ export class SpeechToTextComponent implements OnInit {
     //Muestra dialogo con las impresoras unstaladas
     const dialogRef = this.dialog.open(DialogOptionComponent, {
       data: {
-        description: "Impresoras instaladas:",
+        verdadero:"Imprimir",
+        tittle: "Imprimir:",
         options: this.printers
       }
     });
@@ -173,18 +185,25 @@ export class SpeechToTextComponent implements OnInit {
       if (result) {
         //imprimir
         let printer = localStorage.getItem("print");
+        let copies: number = + sessionStorage.getItem("copies");
 
         //Parametros necesarios para imprimir <<Api print en PritService>>
         let settings: DataPrint = {
           "printer": printer, //Nombre de la impresora
           "doc": `${this.name}\n\n${this.service.text}`, //Texto del documento
-          "copies": 1 //Numero de copias
+          "copies": copies //Numero de copias
         }
 
         //Consumo api para imprimir, falta controlar respuestas
         this._printService.postPrintText(settings).subscribe(
           res => {
-            console.log(res);
+           let result:number = <number>res; 
+           console.log(res);
+
+           if (result == 2) {
+             this.dialogAccept("Impresora no disponible.",`Verifique que ${printer} esté disponible para imprimir.`);
+           }
+
           },
           err => {
             console.error(err);
@@ -193,6 +212,17 @@ export class SpeechToTextComponent implements OnInit {
       }
     });
   }
+
+   //Dialogo con un texto y un boton de aceptar
+   dialogAccept(tittle: string, description:string) {
+    this.dialog.open(GenericAcceptDialogComponent, {
+      data: {
+        tittle: tittle,
+        description: description
+      }
+    });
+  }
+
 
   //Confirmar conexion con PrintService
   async getConnection(): Promise<void> {
@@ -271,6 +301,8 @@ export class SpeechToTextComponent implements OnInit {
 
   //Copia el texto que se ha reconocido al portapapeles
   copyMessage() {
+
+
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -282,6 +314,17 @@ export class SpeechToTextComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+
+    $('#texto').focus().select();
+
+    if (!this.btn_copy) {
+      this.btn_copy = true;
+
+      setTimeout(() => {
+        this.btn_copy = false;
+      }, 1000);
+    }
+
   }
 
   //elimina el texto que se ha reconocido 
