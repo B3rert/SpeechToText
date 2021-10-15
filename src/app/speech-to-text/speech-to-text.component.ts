@@ -13,8 +13,20 @@ import { HttpClient } from '@angular/common/http';
 /***/
 import * as $ from 'jquery';
 import { GenericAcceptDialogComponent } from '../component/dialog/generic-accept-dialog/generic-accept-dialog.component';
+import { FormControl } from '@angular/forms';
+import { LanguageGroup,Language} from 'src/app/interfaces/languages.interface';
 /** */
+interface Pokemon {
+  value: string;
+  viewValue: string;
+}
 
+
+interface PokemonGroup {
+  disabled?: boolean;
+  name: string;
+  pokemon: Pokemon[];
+}
 @Component({
   selector: 'app-speech-to-text',
   templateUrl: './speech-to-text.component.html',
@@ -25,6 +37,45 @@ export class SpeechToTextComponent implements OnInit {
 
   @ViewChild('content', { static: false }) content: ElementRef;
 
+  languageControl = new FormControl();
+  languageGroups:LanguageGroup[] = [];
+
+  pokemonControl = new FormControl();
+  pokemonGroups: PokemonGroup[] = [
+    {
+      name: 'Grass',
+      pokemon: [
+        {value: 'bulbasaur-0', viewValue: 'Bulbasaur'},
+        {value: 'oddish-1', viewValue: 'Oddish'},
+        {value: 'bellsprout-2', viewValue: 'Bellsprout'}
+      ]
+    },
+    {
+      name: 'Water',
+      pokemon: [
+        {value: 'squirtle-3', viewValue: 'Squirtle'},
+        {value: 'psyduck-4', viewValue: 'Psyduck'},
+        {value: 'horsea-5', viewValue: 'Horsea'}
+      ]
+    },
+    {
+      name: 'Fire',
+      disabled: true,
+      pokemon: [
+        {value: 'charmander-6', viewValue: 'Charmander'},
+        {value: 'vulpix-7', viewValue: 'Vulpix'},
+        {value: 'flareon-8', viewValue: 'Flareon'}
+      ]
+    },
+    {
+      name: 'Psychic',
+      pokemon: [
+        {value: 'mew-9', viewValue: 'Mew'},
+        {value: 'mewtwo-10', viewValue: 'Mewtwo'},
+      ]
+    }
+  ];
+  
   /*Iconos*/
   faCheck = faCheck;
   faEdit = faEdit;
@@ -56,8 +107,7 @@ export class SpeechToTextComponent implements OnInit {
     private http: HttpClient
   ) {
 
-    this.lang = service.languages;
-    console.log(this.lang);
+    this.generateLanguage();
     
     let name = localStorage.getItem("name");
     if (name) {
@@ -71,6 +121,15 @@ export class SpeechToTextComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  generateLanguage(){
+    this.lang = this.service.languages;
+
+    this.lang.forEach(element => {
+      console.log(element);
+      
+    });
+  }
+
   //Inicializa de froma asincrona las funciones necesarias
   async loadData() {
     await this.getConnection();
@@ -81,6 +140,7 @@ export class SpeechToTextComponent implements OnInit {
       this.getPrinter();
     }
   }
+
 
   //Guarda el nombre del emisor
   saveName() {

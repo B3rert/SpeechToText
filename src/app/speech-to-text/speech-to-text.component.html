@@ -36,6 +36,21 @@
                     </mat-icon>
                 </button>
             </div>
+           
+        </div>
+        <div class="col">
+            <mat-form-field appearance="fill" style="float: right;">
+                <mat-label>Lenguaje</mat-label>
+                <mat-select [attr.formControl]="languageGroups">
+                 <!-- <mat-option>-- Ninguno --</mat-option>-->
+                  <mat-optgroup *ngFor="let group of service.languages" [label]="group.name"
+                                [disabled]="group.disabled">
+                    <mat-option *ngFor="let language of group.language" [value]="language.value">
+                      {{language.viewValue}}
+                    </mat-option>
+                  </mat-optgroup>
+                </mat-select>
+              </mat-form-field>
         </div>
     </div>
 </div>
