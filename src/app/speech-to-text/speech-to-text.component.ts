@@ -107,7 +107,7 @@ export class SpeechToTextComponent implements OnInit {
     private http: HttpClient
   ) {
 
-    this.generateLanguage();
+    this.lang = this.service.languages;
     
     let name = localStorage.getItem("name");
     if (name) {
@@ -121,14 +121,6 @@ export class SpeechToTextComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  generateLanguage(){
-    this.lang = this.service.languages;
-
-    this.lang.forEach(element => {
-      console.log(element);
-      
-    });
-  }
 
   //Inicializa de froma asincrona las funciones necesarias
   async loadData() {
@@ -267,6 +259,8 @@ export class SpeechToTextComponent implements OnInit {
           },
           err => {
             console.error(err);
+            
+            this.dialogAccept("Algo salió mal",err.error);
           }
         );
       }
