@@ -21,6 +21,8 @@ interface Pokemon {
   viewValue: string;
 }
 
+declare var configuraciones: any;
+
 
 interface PokemonGroup {
   disabled?: boolean;
@@ -98,7 +100,11 @@ export class SpeechToTextComponent implements OnInit {
 
   btn_copy = false;
   lang: any;
-
+  title_report= configuraciones.title_report;
+  column1 = configuraciones.column1;
+  column2 = configuraciones.column2;
+  column3 = configuraciones.column3;
+  text_info = configuraciones.text_info;
 
   constructor(
     public service: VoiceRecognitionService,
@@ -171,7 +177,21 @@ export class SpeechToTextComponent implements OnInit {
   getHoraActual() {
     var hoy = new Date();
     var fecha = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
-    var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
+
+    let hours = hoy.getHours();
+
+     //it is pm if hours from 12 onwards
+    let suffix = (hours >= 12)? 'p.m.' : '.a.m.';
+
+     //only -12 from hours if it is greater than 12 (if not back at mid night)
+     hours = (hours > 12)? hours -12 : hours;
+ 
+     //if 00 then it is 12 am
+     hours = (hours.toString() == '00')? 12 : hours;
+
+    var hora = hours + ':' + hoy.getMinutes() + ':' + hoy.getSeconds() + suffix;
+   
+
     var fecha_hora = fecha + ' ' + hora;
     return fecha_hora;
   }
@@ -182,7 +202,7 @@ export class SpeechToTextComponent implements OnInit {
     let fecha_actual = this.getHoraActual();
 
     let table_content: any[] = [
-      [{ text: 'Producto Id', style: 'header_table' }, { text: 'Producto', style: "header_table" }, { text: 'Observación', style: 'header_table' }],
+      [{ text: this.column1, style: 'header_table' }, { text: this.column2, style: "header_table" }, { text: this.column3, style: 'header_table' }],
     ]
 
     let text_print = this.service.text;
@@ -205,10 +225,12 @@ export class SpeechToTextComponent implements OnInit {
     });
 
     //Logos convertidos a base64
+   // await this.generateBase64('/app/img/empresa_logo.jpg');
     await this.generateBase64('/assets/img/empresa_logo.jpg');
     this.logo_empresa = this.imageBase64;
 
-    await this.generateBase64('/assets/img/demosoft.jpg');
+   await this.generateBase64('/assets/img/demosoft.jpg');
+    //await this.generateBase64('/app/img/demosoft.jfif');
     this.logo_desarrollador = this.imageBase64;
     // this.stopService();
 
@@ -225,16 +247,15 @@ export class SpeechToTextComponent implements OnInit {
 
               body: [
                 [
-                  { text: `Atendió: ${this.name}`, bold: true },
+                  //{ text: `Atendió: ${this.name}`, bold: true },
                   //{ text: 'blob:http://localhost:4200/be8bcf5c-2119-43a5-b419-b77b3f9a99e2', style: 'gray_font' }, ''
-                  '', ''
+                  '','', ''
                 ],
                 [
                   {
                     layout: 'noBorders',
                     table: {
-                      widths: ['*', '*'],
-
+                      widths: ['auto', '*'],
                       body: [
                         ['',''],
                         ['',''],
@@ -246,7 +267,7 @@ export class SpeechToTextComponent implements OnInit {
                     }
                   },
                   //{ text: `\n\n${fecha_actual}. Página ${currentPage} de ${pageCount}`, style: 'gray_font_bottom' },
-                  { text: 'PBX: 2259-3232 / 6a. Ave \"A\" 13-25 Zona 9, Guatemala/ info@imcguate.com\ndrcabreramancio@imcguate.com\t5552-417\t/IMCCabreraMancio/\nwww.imcguate.com', style: 'blue_font' },
+                  { text: this.text_info, style: 'blue_font' },
                   {
                     image: this.logo_desarrollador,
                     width: 50,
@@ -262,7 +283,10 @@ export class SpeechToTextComponent implements OnInit {
         return [
          
           {
-            text: "Receta", style: "title", margin: [20, 30, 10, 250]
+            text: this.title_report, style: "title", margin: [0, 30, 0, 0]
+          },
+          {
+            text:this.name, margin: [20, 33, 0, 0]
           },
           {
             image: this.logo_empresa,
