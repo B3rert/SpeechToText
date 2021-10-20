@@ -125,7 +125,7 @@ export class SpeechToTextComponent implements OnInit {
 
     const dialogRef = this.dialog.open(DialogFormatComponent, {
       data: {
-        tittle: "Formato de la impresión:",
+        tittle: "Formatos de impresión disponibles:",
         options: formats
       }
     });
@@ -178,25 +178,6 @@ export class SpeechToTextComponent implements OnInit {
 
     var fecha_hora = fecha + ' ' + hora;
     return fecha_hora;
-  }
-
-
-  async formatColumns(): Promise<void> {
-    return new Promise((resolve, reject) => {
-
-    });
-  }
-
-  async formatNoneColumns(): Promise<void> {
-    return new Promise((resolve, reject) => {
-
-    });
-  }
-
-  async formatNone(): Promise<void> {
-    return new Promise((resolve, reject) => {
-
-    });
   }
 
 
