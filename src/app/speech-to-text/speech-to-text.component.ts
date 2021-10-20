@@ -260,6 +260,7 @@ export class SpeechToTextComponent implements OnInit {
       },
       header: () => {
         return [
+         
           {
             text: "Receta", style: "title", margin: [20, 30, 10, 250]
           },
