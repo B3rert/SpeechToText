@@ -1,590 +1,568 @@
 import { Injectable } from '@angular/core';
-import { LanguageGroup } from '../interfaces/languages.interface';
+import { Language } from '../interfaces/languages.interface';
 
 //webkit api Google
 declare var webkitSpeechRecognition: any;
+declare var configuraciones: any;
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoiceRecognitionService {
+   
+ lang = 'es-ES';
 
-  languages: LanguageGroup[] = [
+
+
+  languge: Language[] = [
     {
-        "name": "Afrikaans",
-        "language": [
-            {
-                "viewValue": "South Africa",
-                "value": "af-ZA"
-            }
-        ]
+        "viewValue": "Afrikaans (South Africa)",
+        "value": "af-ZA"
     },
     {
-        "name": "Arabic",
-        "language": [
-            {
-                "viewValue": "Algeria",
-                "value": "ar-DZ"
-            },
-            {
-                "viewValue": "Bahrain",
-                "value": "ar-BH"
-            },
-            {
-                "viewValue": "Egypt",
-                "value": "ar-EG"
-            },
-            {
-                "viewValue": "Israel",
-                "value": "ar-IL"
-            },
-            {
-                "viewValue": "Iraq",
-                "value": "ar-IQ"
-            },
-            {
-                "viewValue": "Jordan",
-                "value": "ar-JO"
-            },
-            {
-                "viewValue": "Kuwait",
-                "value": "ar-KW"
-            },
-            {
-                "viewValue": "Lebanon",
-                "value": "ar-LB"
-            },
-            {
-                "viewValue": "Morocco",
-                "value": "ar-MA"
-            },
-            {
-                "viewValue": "Oman",
-                "value": "ar-OM"
-            },
-            {
-                "viewValue": "Palestinian Territory",
-                "value": "ar-PS"
-            },
-            {
-                "viewValue": "Qatar",
-                "value": "ar-QA"
-            },
-            {
-                "viewValue": "Saudi Arabia",
-                "value": "ar-SA"
-            },
-            {
-                "viewValue": "Tunisia",
-                "value": "ar-TN"
-            },
-            {
-                "viewValue": "UAE",
-                "value": "ar-AE"
-            }
-        ]
+        "viewValue": "Albanian (Albania)",
+        "value": "sq-AL"
     },
     {
-        "name": "Basque",
-        "language": [
-            {
-                "viewValue": "Spain",
-                "value": "eu-ES"
-            }
-        ]
+        "viewValue": "Amharic (Ethiopia)",
+        "value": "am-ET"
     },
     {
-        "name": "Bulgarian",
-        "language": [
-            {
-                "viewValue": "Bulgaria",
-                "value": "bg-BG"
-            }
-        ]
+        "viewValue": "Arabic (Algeria)",
+        "value": "ar-DZ"
     },
     {
-        "name": "Catalan",
-        "language": [
-            {
-                "viewValue": "Spain",
-                "value": "ca-ES"
-            }
-        ]
+        "viewValue": "Arabic (Bahrain)",
+        "value": "ar-BH"
     },
     {
-        "name": "Chinese Mandarin",
-        "language": [
-            {
-                "viewValue": "China (Simp.)",
-                "value": "cmn-Hans-CN"
-            },
-            {
-                "viewValue": "Hong Kong SAR (Trad.)",
-                "value": "cmn-Hans-HK"
-            },
-            {
-                "viewValue": "Taiwan (Trad.)",
-                "value": "cmn-Hant-TW"
-            }
-        ]
+        "viewValue": "Arabic (Egypt)",
+        "value": "ar-EG"
     },
     {
-        "name": "Chinese Cantonese",
-        "language": [
-            {
-                "viewValue": "Hong Kong",
-                "value": "yue-Hant-HK"
-            }
-        ]
+        "viewValue": "Arabic (Iraq)",
+        "value": "ar-IQ"
     },
     {
-        "name": "Croatian",
-        "language": [
-            {
-                "viewValue": "Croatia",
-                "value": "hr_HR"
-            }
-        ]
+        "viewValue": "Arabic (Israel)",
+        "value": "ar-IL"
     },
     {
-        "name": "Czech",
-        "language": [
-            {
-                "viewValue": "Czech Republic",
-                "value": "cs-CZ"
-            }
-        ]
+        "viewValue": "Arabic (Jordan)",
+        "value": "ar-JO"
     },
     {
-        "name": "Danish",
-        "language": [
-            {
-                "viewValue": "Denmark",
-                "value": "da-DK"
-            }
-        ]
+        "viewValue": "Arabic (Kuwait)",
+        "value": "ar-KW"
     },
     {
-        "name": "English",
-        "language": [
-            {
-                "viewValue": "Australia",
-                "value": "en-AU"
-            },
-            {
-                "viewValue": "Canada",
-                "value": "en-CA"
-            },
-            {
-                "viewValue": "India",
-                "value": "en-IN"
-            },
-            {
-                "viewValue": "Ireland",
-                "value": "en-IE"
-            },
-            {
-                "viewValue": "New Zealand",
-                "value": "en-NZ"
-            },
-            {
-                "viewValue": "Philippines",
-                "value": "en-PH"
-            },
-            {
-                "viewValue": "South Africa",
-                "value": "en-ZA"
-            },
-            {
-                "viewValue": "United Kingdom",
-                "value": "en-GB"
-            },
-            {
-                "viewValue": "United States",
-                "value": "en-US"
-            }
-        ]
+        "viewValue": "Arabic (Lebanon)",
+        "value": "ar-LB"
     },
     {
-        "name": "Farsi",
-        "language": [
-            {
-                "viewValue": "Iran",
-                "value": "fa-IR"
-            }
-        ]
+        "viewValue": "Arabic (Morocco)",
+        "value": "ar-MA"
     },
     {
-        "name": "French",
-        "language": [
-            {
-                "viewValue": "France",
-                "value": "fr-FR"
-            }
-        ]
+        "viewValue": "Arabic (Oman)",
+        "value": "ar-OM"
     },
     {
-        "name": "Filipino",
-        "language": [
-            {
-                "viewValue": "Philippines",
-                "value": "fil-PH"
-            }
-        ]
+        "viewValue": "Arabic (Qatar)",
+        "value": "ar-QA"
     },
     {
-        "name": "Galician",
-        "language": [
-            {
-                "viewValue": "Spain",
-                "value": "gl-ES"
-            }
-        ]
+        "viewValue": "Arabic (Saudi Arabia)",
+        "value": "ar-SA"
     },
     {
-        "name": "German",
-        "language": [
-            {
-                "viewValue": "Germany",
-                "value": "de-DE"
-            }
-        ]
+        "viewValue": "Arabic (State of Palestine)",
+        "value": "ar-PS"
     },
     {
-        "name": "Greek",
-        "language": [
-            {
-                "viewValue": "Greece",
-                "value": "el-GR"
-            }
-        ]
+        "viewValue": "Arabic (Tunisia)",
+        "value": "ar-TN"
     },
     {
-        "name": "Finnish",
-        "language": [
-            {
-                "viewValue": "Finland",
-                "value": "fi-FI"
-            }
-        ]
+        "viewValue": "Arabic (United Arab Emirates)",
+        "value": "ar-AE"
     },
     {
-        "name": "Hebrew",
-        "language": [
-            {
-                "viewValue": "Israel",
-                "value": "he-IL"
-            }
-        ]
+        "viewValue": "Arabic (Yemen)",
+        "value": "ar-YE"
     },
     {
-        "name": "Hindi",
-        "language": [
-            {
-                "viewValue": "India",
-                "value": "hi-IN"
-            }
-        ]
+        "viewValue": "Armenian (Armenia)",
+        "value": "hy-AM"
     },
     {
-        "name": "Hungarian",
-        "language": [
-            {
-                "viewValue": "Hungary",
-                "value": "hu-HU"
-            }
-        ]
+        "viewValue": "Azerbaijani (Azerbaijan)",
+        "value": "az-AZ"
     },
     {
-        "name": "Indonesian",
-        "language": [
-            {
-                "viewValue": "Indonesia",
-                "value": "id-ID"
-            }
-        ]
+        "viewValue": "Basque (Spain)",
+        "value": "eu-ES"
     },
     {
-        "name": "Icelandic",
-        "language": [
-            {
-                "viewValue": "Iceland",
-                "value": "is-IS"
-            }
-        ]
+        "viewValue": "Bengali (Bangladesh)",
+        "value": "bn-BD"
     },
     {
-        "name": "Italian",
-        "language": [
-            {
-                "viewValue": "Italy",
-                "value": "it-IT"
-            },
-            {
-                "viewValue": "Switzerland",
-                "value": "it-CH"
-            }
-        ]
+        "viewValue": "Bengali (India)",
+        "value": "bn-IN"
     },
     {
-        "name": "Japanese",
-        "language": [
-            {
-                "viewValue": "Japan",
-                "value": "ja-JP"
-            }
-        ]
+        "viewValue": "Bosnian (Bosnia and Herzegovina)",
+        "value": "bs-BA"
     },
     {
-        "name": "Korean",
-        "language": [
-            {
-                "viewValue": "Korea",
-                "value": "ko-KR"
-            }
-        ]
+        "viewValue": "Bulgarian (Bulgaria)",
+        "value": "bg-BG"
     },
     {
-        "name": "Lithuanian",
-        "language": [
-            {
-                "viewValue": "Lithuania",
-                "value": "lt-LT"
-            }
-        ]
+        "viewValue": "Burmese (Myanmar)",
+        "value": "my-MM"
     },
     {
-        "name": "Malaysian",
-        "language": [
-            {
-                "viewValue": "Malaysia",
-                "value": "ms-MY"
-            }
-        ]
+        "viewValue": "Catalan (Spain)",
+        "value": "ca-ES"
     },
     {
-        "name": "Dutch",
-        "language": [
-            {
-                "viewValue": "Netherlands",
-                "value": "nl-NL"
-            }
-        ]
+        "viewValue": "Chinese, Cantonese (Traditional Hong Kong)",
+        "value": "yue-Hant-HK"
     },
     {
-        "name": "Norwegian",
-        "language": [
-            {
-                "viewValue": "Norway",
-                "value": "nb-NO"
-            }
-        ]
+        "viewValue": "Chinese, Mandarin (Simplified, China)",
+        "value": "zh"
     },
     {
-        "name": "Polish",
-        "language": [
-            {
-                "viewValue": "Poland",
-                "value": "pl-PL"
-            }
-        ]
+        "viewValue": "Chinese, Mandarin (Traditional, Taiwan)",
+        "value": "zh-TW"
     },
     {
-        "name": "Portuguese",
-        "language": [
-            {
-                "viewValue": "Brazil",
-                "value": "pt-BR"
-            },
-            {
-                "viewValue": "Portugal",
-                "value": "pt-PT"
-            }
-        ]
+        "viewValue": "Croatian (Croatia)",
+        "value": "hr-HR"
     },
     {
-        "name": "Romanian",
-        "language": [
-            {
-                "viewValue": "Romania",
-                "value": "ro-RO"
-            }
-        ]
+        "viewValue": "Czech (Czech Republic)",
+        "value": "cs-CZ"
     },
     {
-        "name": "Russian",
-        "language": [
-            {
-                "viewValue": "Russia",
-                "value": "ru-RU"
-            }
-        ]
+        "viewValue": "Danish (Denmark)",
+        "value": "da-DK"
     },
     {
-        "name": "Serbian",
-        "language": [
-            {
-                "viewValue": "Serbia",
-                "value": "sr-RS"
-            }
-        ]
+        "viewValue": "Dutch (Belgium)",
+        "value": "nl-BE"
     },
     {
-        "name": "Slovak",
-        "language": [
-            {
-                "viewValue": "Slovakia",
-                "value": "sk-SK"
-            }
-        ]
+        "viewValue": "Dutch (Netherlands)",
+        "value": "nl-NL"
     },
     {
-        "name": "Slovenian",
-        "language": [
-            {
-                "viewValue": "Slovenia",
-                "value": "sl-SI"
-            }
-        ]
+        "viewValue": "English (Australia)",
+        "value": "en-AU"
     },
     {
-        "name": "Spanish",
-        "language": [
-            {
-                "viewValue": "Argentina",
-                "value": "es-AR"
-            },
-            {
-                "viewValue": "Bolivia",
-                "value": "es-BO"
-            },
-            {
-                "viewValue": "Chile",
-                "value": "es-CL"
-            },
-            {
-                "viewValue": "Colombia",
-                "value": "es-CO"
-            },
-            {
-                "viewValue": "Costa Rica",
-                "value": "es-CR"
-            },
-            {
-                "viewValue": "Dominican Republic",
-                "value": "es-DO"
-            },
-            {
-                "viewValue": "Ecuador",
-                "value": "es-EC"
-            },
-            {
-                "viewValue": "El Salvador",
-                "value": "es-SV"
-            },
-            {
-                "viewValue": "Guatemala",
-                "value": "es-GT"
-            },
-            {
-                "viewValue": "Honduras",
-                "value": "es-HN"
-            },
-            {
-                "viewValue": "México",
-                "value": "es-MX"
-            },
-            {
-                "viewValue": "Nicaragua",
-                "value": "es-NI"
-            },
-            {
-                "viewValue": "Panamá",
-                "value": "es-PA"
-            },
-            {
-                "viewValue": "Paraguay",
-                "value": "es-PY"
-            },
-            {
-                "viewValue": "Perú",
-                "value": "es-PE"
-            },
-            {
-                "viewValue": "Puerto Rico",
-                "value": "es-PR"
-            },
-            {
-                "viewValue": "Spain",
-                "value": "es-ES"
-            },
-            {
-                "viewValue": "Uruguay",
-                "value": "es-UY"
-            },
-            {
-                "viewValue": "United States",
-                "value": "es-US"
-            },
-            {
-                "viewValue": "Venezuela",
-                "value": "es-VE"
-            }
-        ]
+        "viewValue": "English (Canada)",
+        "value": "en-CA"
     },
     {
-        "name": "Swedish",
-        "language": [
-            {
-                "viewValue": "Sweden",
-                "value": "sv-SE"
-            }
-        ]
+        "viewValue": "English (Ghana)",
+        "value": "en-GH"
     },
     {
-        "name": "Thai",
-        "language": [
-            {
-                "viewValue": "Thailand",
-                "value": "th-TH"
-            }
-        ]
+        "viewValue": "English (Hong Kong)",
+        "value":	"en-HK"
     },
     {
-        "name": "Turkish",
-        "language": [
-            {
-                "viewValue": "Turkey",
-                "value": "tr-TR"
-            }
-        ]
+        "viewValue": "English (India)",
+        "value": "en-IN"
     },
     {
-        "name": "Ukrainian",
-        "language": [
-            {
-                "viewValue": "Ukraine",
-                "value": "uk-UA"
-            }
-        ]
+        "viewValue": "English (Ireland)",
+        "value": "en-IE"
     },
     {
-        "name": "Vietnamese",
-        "language": [
-            {
-                "viewValue": "Viet Nam",
-                "value": "vi-VN"
-            }
-        ]
+        "viewValue": "English (Kenya)",
+        "value": "en-KE"
     },
     {
-        "name": "Zulu",
-        "language": [
-            {
-                "viewValue": "South Africa",
-                "value": "zu-ZA"
-            }
-        ]
+        "viewValue": "English (New Zealand)",
+        "value":	"en-NZ"
+    },
+    {
+        "viewValue": "English (Nigeria)",
+        "value": "en-NG"
+    },
+    {
+        "viewValue": "English (Pakistan)",
+        "value": "en-PK"
+    },
+    {
+        "viewValue": "English (Philippines)",
+        "value": "en-PH"
+    },
+    {
+        "viewValue": "English (Singapore)",
+        "value": "en-SG"
+    },
+    {
+        "viewValue": "English (South Africa)",
+        "value":	"en-ZA"
+    },
+    {
+        "viewValue": "English (Tanzania)",
+        "value": "en-TZ"
+    },
+    {
+        "viewValue": "English (United Kingdom)",
+        "value":	"en-GB"
+    },
+    {
+        "viewValue": "English (United States)",
+        "value":	"en-US"
+    },
+    {
+        "viewValue": "Estonian (Estonia)",
+        "value": "et-EE"
+    },
+    {
+        "viewValue": "Filipino (Philippines)",
+        "value": "fil-PH"
+    },
+    {
+        "viewValue": "Finnish (Finland)",
+        "value": "fi-FI"
+    },
+    {
+        "viewValue": "French (Belgium)",
+        "value": "fr-BE"
+    },
+    {
+        "viewValue": "French (Canada)",
+        "value": "fr-CA"
+    },
+    {
+        "viewValue": "French (France)",
+        "value": "fr-FR"
+    },
+    {
+        "viewValue": "French (Switzerland)",
+        "value": "fr-CH"
+    },
+    {
+        "viewValue": "Galician (Spain)",
+        "value": "gl-ES"
+    },
+    {
+        "viewValue": "Georgian (Georgia)",
+        "value": "ka-GE"
+    },
+    {
+        "viewValue": "German (Austria)",
+        "value": "de-AT"
+    },
+    {
+        "viewValue": "German (Germany)",
+        "value": "de-DE"
+    },
+    {
+        "viewValue": "German (Switzerland)",
+        "value": "de-CH"
+    },
+    {
+        "viewValue": "Greek (Greece)",
+        "value": "el-GR"
+    },
+    {
+        "viewValue": "Gujarati (India)",
+        "value": "gu-IN"
+    },
+    {
+        "viewValue": "Hebrew (Israel)",
+        "value": "iw-IL"
+    },
+    {
+        "viewValue": "Hindi (India)",
+        "value": "hi-IN"
+    },
+    {
+        "viewValue": "Hungarian (Hungary)",
+        "value": "hu-HU"
+    },
+    {
+        "viewValue": "Icelandic (Iceland)",
+        "value": "is-IS"
+    },
+    {
+        "viewValue": "Indonesian (Indonesia)",
+        "value": "id-ID"
+    },
+    {
+        "viewValue": "Italian (Italy)",
+        "value": "it-IT"
+    },
+    {
+        "viewValue": "Italian (Switzerland)",
+        "value": "it-CH"
+    },
+    {
+        "viewValue": "Japanese (Japan)",
+        "value": "ja-JP"
+    },
+    {
+        "viewValue": "Javanese (Indonesia)",
+        "value": "jv-ID"
+    },
+    {
+        "viewValue": "Kannada (India)",
+        "value": "kn-IN"
+    },
+    {
+        "viewValue": "Kazakh (Kazakhstan)",
+        "value": "kk-KZ"
+    },
+    {
+        "viewValue": "Khmer (Cambodia)",
+        "value": "km-KH"
+    },
+    {
+        "viewValue": "Korean (South Korea)",
+        "value":	"ko-KR"
+    },
+    {
+        "viewValue": "Lao (Laos)",
+        "value": "lo-LA"
+    },
+    {
+        "viewValue": "Latvian (Latvia)",
+        "value": "lv-LV"
+    },
+    {
+        "viewValue": "Lithuanian (Lithuania)",
+        "value": "lt-LT"
+    },
+    {
+        "viewValue": "Macedonian (North Macedonia)",
+        "value":	"mk-MK"
+    },
+    {
+        "viewValue": "Malay (Malaysia)",
+        "value": "ms-MY"
+    },
+    {
+        "viewValue": "Malayalam (India)",
+        "value": "ml-IN"
+    },
+    {
+        "viewValue": "Marathi (India)",
+        "value": "mr-IN"
+    },
+    {
+        "viewValue": "Mongolian (Mongolia)",
+        "value": "mn-MN"
+    },
+    {
+        "viewValue": "Nepali (Nepal)",
+        "value": "ne-NP"
+    },
+    {
+        "viewValue": "Norwegian Bokmål (Norway)",
+        "value": "no-NO"
+    },
+    {
+        "viewValue": "Persian (Iran)",
+        "value": "fa-IR"
+    },
+    {
+        "viewValue": "Polish (Poland)",
+        "value": "pl-PL"
+    },
+    {
+        "viewValue": "Portuguese (Brazil)",
+        "value": "pt-BR"
+    },
+    {
+        "viewValue": "Portuguese (Portugal)",
+        "value": "pt-PT"
+    },
+    {
+        "viewValue": "Punjabi (Gurmukhi India)",
+        "value":	"pa-Guru-IN"
+    },
+    {
+        "viewValue": "Romanian (Romania)",
+        "value": "ro-RO"
+    },
+    {
+        "viewValue": "Russian (Russia)",
+        "value": "ru-RU"
+    },
+    {
+        "viewValue": "Serbian (Serbia)",
+        "value": "sr-RS"
+    },
+    {
+        "viewValue": "Sinhala (Sri Lanka)",
+        "value":	"si-LK"
+    },
+    {
+        "viewValue": "Slovak (Slovakia)",
+        "value": "sk-SK"
+    },
+    {
+        "viewValue": "Slovenian (Slovenia)",
+        "value": "sl-SI"
+    },
+    {
+        "viewValue": "Spanish (Argentina)",
+        "value": "es-AR"
+    },
+    {
+        "viewValue": "Spanish (Bolivia)",
+        "value": "es-BO"
+    },
+    {
+        "viewValue": "Spanish (Chile)",
+        "value": "es-CL"
+    },
+    {
+        "viewValue": "Spanish (Colombia)",
+        "value": "es-CO"
+    },
+    {
+        "viewValue": "Spanish (Costa Rica)",
+        "value":	"es-CR"
+    },
+    {
+        "viewValue": "Spanish (Dominican Republic)",
+        "value":	"es-DO"
+    },
+    {
+        "viewValue": "Spanish (Ecuador)",
+        "value": "es-EC"
+    },
+    {
+        "viewValue": "Spanish (El Salvador)",
+        "value":	"es-SV"
+    },
+    {
+        "viewValue": "Spanish (Guatemala)",
+        "value": "es-GT"
+    },
+    {
+        "viewValue": "Spanish (Honduras)",
+        "value": "es-HN"
+    },
+    {
+        "viewValue": "Spanish (Mexico)",
+        "value": "es-MX"
+    },
+    {
+        "viewValue": "Spanish (Nicaragua)",
+        "value": "es-NI"
+    },
+    {
+        "viewValue": "Spanish (Panama)",
+        "value": "es-PA"
+    },
+    {
+        "viewValue": "Spanish (Paraguay)",
+        "value": "es-PY"
+    },
+    {
+        "viewValue": "Spanish (Peru)",
+        "value": "es-PE"
+    },
+    {
+        "viewValue": "Spanish (Puerto Rico)",
+        "value":	"es-PR"
+    },
+    {
+        "viewValue": "Spanish (Spain)",
+        "value": "es-ES"
+    },
+    {
+        "viewValue": "Spanish (United States)",
+        "value":	"es-US"
+    },
+    {
+        "viewValue": "Spanish (Uruguay)",
+        "value": "es-UY"
+    },
+    {
+        "viewValue": "Spanish (Venezuela)",
+        "value": "es-VE"
+    },
+    {
+        "viewValue": "Sundanese (Indonesia)",
+        "value": "su-ID"
+    },
+    {
+        "viewValue": "Swahili (Kenya)",
+        "value": "sw-KE"
+    },
+    {
+        "viewValue": "Swahili (Tanzania)",
+        "value": "sw-TZ"
+    },
+    {
+        "viewValue": "Swedish (Sweden)",
+        "value": "sv-SE"
+    },
+    {
+        "viewValue": "Tamil (India)",
+        "value": "ta-IN"
+    },
+    {
+        "viewValue": "Tamil (Malaysia)",
+        "value": "ta-MY"
+    },
+    {
+        "viewValue": "Tamil (Singapore)",
+        "value": "ta-SG"
+    },
+    {
+        "viewValue": "Tamil (Sri Lanka)",
+        "value":	"ta-LK"
+    },
+    {
+        "viewValue": "Telugu (India)",
+        "value": "te-IN"
+    },
+    {
+        "viewValue": "Thai (Thailand)",
+        "value": "th-TH"
+    },
+    {
+        "viewValue": "Turkish (Turkey)",
+        "value": "tr-TR"
+    },
+    {
+        "viewValue": "Ukrainian (Ukraine)",
+        "value": "uk-UA"
+    },
+    {
+        "viewValue": "Urdu (India)",
+        "value": "ur-IN"
+    },
+    {
+        "viewValue": "Urdu (Pakistan)",
+        "value": "ur-PK"
+    },
+    {
+        "viewValue": "Uzbek (Uzbekistan)",
+        "value": "uz-UZ"
+    },
+    {
+        "viewValue": "Vietnamese (Vietnam)",
+        "value": "vi-VN"
+    },
+    {
+        "viewValue": "Zulu (South Africa)",
+        "value":	"zu-ZA"
     }
 ];
 
@@ -597,12 +575,27 @@ export class VoiceRecognitionService {
   service_on = false;
   text_button = 'Iniciar';
 
-  constructor() { }
+  
+  constructor() {
+      let lang_local = localStorage.getItem("lang_select");
+      if (lang_local) {
+          this.lang = lang_local;
+      }
+      else{
+          this.lang = configuraciones.language_default;
+      }
+   }
+
+  changeLang(lang:string){
+    this.lang = lang;
+    localStorage.setItem("lang_select",this.lang);
+  }
 
   init() {
 
+    
     this.recognition.interimResults = true;
-    this.recognition.lang = 'es-ES';
+    this.recognition.lang = this.lang;
 
     this.recognition.addEventListener('result', (e) => {
       const transcript = Array.from(e.results)
