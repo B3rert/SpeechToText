@@ -79,6 +79,12 @@
                     (click)="copyMessage()">Copiado <mat-icon>done</mat-icon></button>
                 <button class="button_speech button__end" mat-stroked-button color="primary"
                     (click)="generarPDF()">Imprimir</button>
+                    
+                    <button class="button__end" mat-icon-button color="primary" (click)="selectedFormat()">
+                        <mat-icon>
+                            <fa-icon [icon]="faCogs"></fa-icon>
+                        </mat-icon>
+                    </button>
             </div>
         </div>
         <div class="row">

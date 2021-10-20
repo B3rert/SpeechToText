@@ -7,12 +7,17 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogOptionComponent } from '../component/dialog/dialog-option/dialog-option.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import { HttpClient } from '@angular/common/http';
+
+/**Iconos */
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { HttpClient } from '@angular/common/http';
+import { faCogs } from '@fortawesome/free-solid-svg-icons';
+
 /***/
 import * as $ from 'jquery';
 import { GenericAcceptDialogComponent } from '../component/dialog/generic-accept-dialog/generic-accept-dialog.component';
+import { DialogFormatComponent } from '../component/dialog/dialog-format/dialog-format.component';
 import { Language } from '../interfaces/languages.interface';
 /** */
 
@@ -28,13 +33,14 @@ declare var configuraciones: any;
 export class SpeechToTextComponent implements OnInit {
 
   @ViewChild('content', { static: false }) content: ElementRef;
-  
-  selectedLanguage:string;
-  languages:Language[] = [];
+
+  selectedLanguage: string;
+  languages: Language[] = [];
 
   /*Iconos*/
   faCheck = faCheck;
   faEdit = faEdit;
+  faCogs = faCogs;
 
   name: string;
   save_name = false;
@@ -54,7 +60,7 @@ export class SpeechToTextComponent implements OnInit {
 
   btn_copy = false;
   lang: any;
-  title_report= configuraciones.title_report;
+  title_report = configuraciones.title_report;
   column1 = configuraciones.column1;
   column2 = configuraciones.column2;
   column3 = configuraciones.column3;
@@ -67,7 +73,7 @@ export class SpeechToTextComponent implements OnInit {
     private http: HttpClient
   ) {
 
-   this.selectedLanguage = service.lang;
+    this.selectedLanguage = service.lang;
     this.languages = service.languge;
 
     let name = localStorage.getItem("name");
@@ -109,6 +115,30 @@ export class SpeechToTextComponent implements OnInit {
     this.save_name = false;
   }
 
+  selectedFormat() {
+
+    let formats: string[] = [
+      "Columnas",
+      "Sin Columnas",
+      "Sin Formato"
+    ];
+
+    const dialogRef = this.dialog.open(DialogFormatComponent, {
+      data: {
+        tittle: "Formato de la impresión:",
+        options: formats
+      }
+    });
+
+    //Obtiene i la opcion fue "Aceptar"
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+
+
+      }
+    });
+  }
+
   //Convierte una imagen dada en base64 la gurada en imageBase64
   async generateBase64(source: string): Promise<void> {
     this.imageBase64 = "";
@@ -134,24 +164,50 @@ export class SpeechToTextComponent implements OnInit {
 
     let hours = hoy.getHours();
 
-     //it is pm if hours from 12 onwards
-    let suffix = (hours >= 12)? 'p.m.' : '.a.m.';
+    //it is pm if hours from 12 onwards
+    let suffix = (hours >= 12) ? 'p.m.' : '.a.m.';
 
-     //only -12 from hours if it is greater than 12 (if not back at mid night)
-     hours = (hours > 12)? hours -12 : hours;
- 
-     //if 00 then it is 12 am
-     hours = (hours.toString() == '00')? 12 : hours;
+    //only -12 from hours if it is greater than 12 (if not back at mid night)
+    hours = (hours > 12) ? hours - 12 : hours;
+
+    //if 00 then it is 12 am
+    hours = (hours.toString() == '00') ? 12 : hours;
 
     var hora = hours + ':' + hoy.getMinutes() + ':' + hoy.getSeconds() + suffix;
-   
+
 
     var fecha_hora = fecha + ' ' + hora;
     return fecha_hora;
   }
 
+
+  async formatColumns(): Promise<void> {
+    return new Promise((resolve, reject) => {
+
+    });
+  }
+
+  async formatNoneColumns(): Promise<void> {
+    return new Promise((resolve, reject) => {
+
+    });
+  }
+
+  async formatNone(): Promise<void> {
+    return new Promise((resolve, reject) => {
+
+    });
+  }
+
+
   //Genera un PDF
   async generarPDF() {
+
+    let format = localStorage.getItem("format");
+    if (!format) {
+      format = "Columnas"
+    }
+
 
     let fecha_actual = this.getHoraActual();
 
@@ -179,120 +235,248 @@ export class SpeechToTextComponent implements OnInit {
     });
 
     //Logos convertidos a base64
-   // await this.generateBase64('/app/img/empresa_logo.jpg');
+    // await this.generateBase64('/app/img/empresa_logo.jpg');
     await this.generateBase64('/assets/img/empresa_logo.jpg');
     this.logo_empresa = this.imageBase64;
 
-   await this.generateBase64('/assets/img/demosoft.jpg');
+    await this.generateBase64('/assets/img/demosoft.jpg');
     //await this.generateBase64('/app/img/demosoft.jfif');
     this.logo_desarrollador = this.imageBase64;
     // this.stopService();
 
-    //Cuerpo del pdf
-    const pdfDefinition: any = {
-      pageSize: 'LETTER',
-      pageMargins: [20, 110, 20, 80],
-      footer: (currentPage, pageCount, pageSize) => {
-        return [
-          {
-            layout: 'noBorders',
-            table: {
-              widths: ['40%', '50%', '10%'],
 
-              body: [
-                [
-                  //{ text: `Atendió: ${this.name}`, bold: true },
-                  //{ text: 'blob:http://localhost:4200/be8bcf5c-2119-43a5-b419-b77b3f9a99e2', style: 'gray_font' }, ''
-                  '','', ''
-                ],
-                [
-                  {
-                    layout: 'noBorders',
-                    table: {
-                      widths: ['auto', '*'],
-                      body: [
-                        ['',''],
-                        ['',''],
-                        [
-                          { text: `${fecha_actual}`, style: 'gray_font_bottom' },
-                          { text: ` Página ${currentPage} de ${pageCount}`,fontSize:8 }
+    let pdfDefinition;
+
+    if (format == "Columnas") {
+      //Cuerpo del pdf
+      pdfDefinition = {
+        pageSize: 'LETTER',
+        pageMargins: [20, 110, 20, 80],
+        footer: (currentPage, pageCount, pageSize) => {
+          return [
+            {
+              layout: 'noBorders',
+              table: {
+                widths: ['40%', '50%', '10%'],
+
+                body: [
+                  [
+                    //{ text: `Atendió: ${this.name}`, bold: true },
+                    //{ text: 'blob:http://localhost:4200/be8bcf5c-2119-43a5-b419-b77b3f9a99e2', style: 'gray_font' }, ''
+                    '', '', ''
+                  ],
+                  [
+                    {
+                      layout: 'noBorders',
+                      table: {
+                        widths: ['auto', '*'],
+                        body: [
+                          ['', ''],
+                          ['', ''],
+                          [
+                            { text: `${fecha_actual}`, style: 'gray_font_bottom' },
+                            { text: ` Página ${currentPage} de ${pageCount}`, fontSize: 8 }
+                          ]
                         ]
-                      ]
-                    }
-                  },
-                  //{ text: `\n\n${fecha_actual}. Página ${currentPage} de ${pageCount}`, style: 'gray_font_bottom' },
-                  { text: this.text_info, style: 'blue_font' },
-                  {
-                    image: this.logo_desarrollador,
-                    width: 50,
-                    //absolutePosition: { x: 540, y: 715 }
-                  }]
-              ]
+                      }
+                    },
+                    //{ text: `\n\n${fecha_actual}. Página ${currentPage} de ${pageCount}`, style: 'gray_font_bottom' },
+                    { text: this.text_info, style: 'blue_font' },
+                    {
+                      image: this.logo_desarrollador,
+                      width: 50,
+                      //absolutePosition: { x: 540, y: 715 }
+                    }]
+                ]
+              },
+              margin: [20, 10, 10, 250]
+            }
+          ];
+        },
+        header: () => {
+          return [
+
+            {
+              text: this.title_report, style: "title", margin: [0, 30, 0, 0]
             },
-            margin: [20, 10, 10, 250]
+            {
+              text: this.name, margin: [20, 33, 0, 0]
+            },
+            {
+              image: this.logo_empresa,
+              width: 115,
+              absolutePosition: { x: 480, y: 0 }
+            }
+          ];
+        },
+        content: [
+          {
+            layout: 'headerLineOnly',
+            table: {
+              // headers are automatically repeated if the table spans over multiple pages
+              // you can declare how many rows should be treated as headers
+              headerRows: 1,
+              widths: ['15%', '35%', '50%'],
+              body: table_content
+            }
+
+            // text: `\n\n\n\n\n${this.name}\n\n${this.service.text}`,
+            //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
           }
-        ];
-      },
-      header: () => {
-        return [
-         
-          {
-            text: this.title_report, style: "title", margin: [0, 30, 0, 0]
+        ],
+        styles: {
+          title: {
+            bold: true,
+            color: "#860d0d",
+            alignment: 'center',
+            fontSize: 14
           },
-          {
-            text:this.name, margin: [20, 33, 0, 0]
+          header_table: {
+            bold: true,
+            color: "#860d0d",
+            alignment: 'left',
+            fontSize: 11
           },
-          {
-            image: this.logo_empresa,
-            width: 115,
-            absolutePosition: { x: 480, y: 0 }
-          }
-        ];
-      },
-      content: [
-        {
-          layout: 'headerLineOnly',
-          table: {
-            // headers are automatically repeated if the table spans over multiple pages
-            // you can declare how many rows should be treated as headers
-            headerRows: 1,
-            widths: ['15%', '35%', '50%'],
-            body: table_content
+          gray_font: {
+            fontSize: 8,
+            color: '#7f7f7f',
+            alignment: 'center',
+          },
+          gray_font_bottom: {
+            fontSize: 8,
+            color: '#7f7f7f',
+            alignment: 'left',
+          },
+          blue_font: {
+            fontSize: 8,
+            color: '#0000ff',
+            alignment: 'center',
           }
 
-          // text: `\n\n\n\n\n${this.name}\n\n${this.service.text}`,
-          //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
         }
-      ],
-      styles: {
-        title: {
-          bold: true,
-          color: "#860d0d",
-          alignment: 'center',
-          fontSize: 14
-        },
-        header_table: {
-          bold: true,
-          color: "#860d0d",
-          alignment: 'left',
-          fontSize: 11
-        },
-        gray_font: {
-          fontSize: 8,
-          color: '#7f7f7f',
-          alignment: 'center',
-        },
-        gray_font_bottom: {
-          fontSize: 8,
-          color: '#7f7f7f',
-          alignment: 'left',
-        },
-        blue_font: {
-          fontSize: 8,
-          color: '#0000ff',
-          alignment: 'center',
-        }
+      }
+    } else if (format == "Sin Columnas") {
+      pdfDefinition = {
+        pageSize: 'LETTER',
+        pageMargins: [20, 110, 20, 80],
+        footer: (currentPage, pageCount, pageSize) => {
+          return [
+            {
+              layout: 'noBorders',
+              table: {
+                widths: ['40%', '50%', '10%'],
 
+                body: [
+                  [
+                    //{ text: `Atendió: ${this.name}`, bold: true },
+                    //{ text: 'blob:http://localhost:4200/be8bcf5c-2119-43a5-b419-b77b3f9a99e2', style: 'gray_font' }, ''
+                    '', '', ''
+                  ],
+                  [
+                    {
+                      layout: 'noBorders',
+                      table: {
+                        widths: ['auto', '*'],
+                        body: [
+                          ['', ''],
+                          ['', ''],
+                          [
+                            { text: `${fecha_actual}`, style: 'gray_font_bottom' },
+                            { text: ` Página ${currentPage} de ${pageCount}`, fontSize: 8 }
+                          ]
+                        ]
+                      }
+                    },
+                    //{ text: `\n\n${fecha_actual}. Página ${currentPage} de ${pageCount}`, style: 'gray_font_bottom' },
+                    { text: this.text_info, style: 'blue_font' },
+                    {
+                      image: this.logo_desarrollador,
+                      width: 50,
+                      //absolutePosition: { x: 540, y: 715 }
+                    }]
+                ]
+              },
+              margin: [20, 10, 10, 250]
+            }
+          ];
+        },
+        header: () => {
+          return [
+
+            {
+              text: this.title_report, style: "title", margin: [0, 30, 0, 0]
+            },
+            {
+              text: this.name, margin: [20, 33, 0, 0]
+            },
+            {
+              image: this.logo_empresa,
+              width: 115,
+              absolutePosition: { x: 480, y: 0 }
+            }
+          ];
+        },
+        content: [
+          {
+            layout: 'headerLineOnly',
+            table: {
+              // headers are automatically repeated if the table spans over multiple pages
+              // you can declare how many rows should be treated as headers
+              headerRows: 1,
+              widths: ['100%'],
+              body: [
+                [{ text: this.column3, style: 'header_table' }],
+                [this.service.text]
+              ]
+            }
+
+            // text: `\n\n\n\n\n${this.name}\n\n${this.service.text}`,
+            //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+          }
+        ],
+        styles: {
+          title: {
+            bold: true,
+            color: "#860d0d",
+            alignment: 'center',
+            fontSize: 14
+          },
+          header_table: {
+            bold: true,
+            color: "#860d0d",
+            alignment: 'left',
+            fontSize: 11
+          },
+          gray_font: {
+            fontSize: 8,
+            color: '#7f7f7f',
+            alignment: 'center',
+          },
+          gray_font_bottom: {
+            fontSize: 8,
+            color: '#7f7f7f',
+            alignment: 'left',
+          },
+          blue_font: {
+            fontSize: 8,
+            color: '#0000ff',
+            alignment: 'center',
+          }
+
+        }
+      }
+    } else if (format == "Sin Formato") {
+      pdfDefinition = {
+        pageSize: 'LETTER',
+        pageMargins: [20, 60],
+        
+        content: [
+          {
+            
+            text: `${this.name}\n\n${this.service.text}`,
+            //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+          }
+        ]
       }
     }
 

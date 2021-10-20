@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>{{data.tittle}}</h2>
+<mat-dialog-content class="mat-typography">
+  <!--matPrefix coloca algo al inicio del input-->
+  <mat-form-field class="example-radio-group" appearance="fill">
+    <mat-label>Formato:</mat-label>
+    <mat-select [(ngModel)]="printer_selected" name="food">
+      <mat-option *ngFor="let printer of printers" [value]="printer">
+        {{printer}}
+      </mat-option>
+    </mat-select>
+    <mat-icon matSuffix class="icon_input">format_clear</mat-icon>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false">{{data.falso}}</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="savePrintDefault()">{{data.verdadero}}</button>
+</mat-dialog-actions>
