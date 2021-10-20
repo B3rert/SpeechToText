@@ -165,7 +165,7 @@ export class SpeechToTextComponent implements OnInit {
     let hours = hoy.getHours();
 
     //it is pm if hours from 12 onwards
-    let suffix = (hours >= 12) ? 'p.m.' : '.a.m.';
+    let suffix = (hours >= 12) ? ' p.m.' : '.a.m.';
 
     //only -12 from hours if it is greater than 12 (if not back at mid night)
     hours = (hours > 12) ? hours - 12 : hours;
@@ -173,7 +173,15 @@ export class SpeechToTextComponent implements OnInit {
     //if 00 then it is 12 am
     hours = (hours.toString() == '00') ? 12 : hours;
 
-    var hora = hours + ':' + hoy.getMinutes() + ':' + hoy.getSeconds() + suffix;
+    let hours_str:string;
+
+    if (hours.toString().length == 1) {
+      hours_str = `0${hours}`;
+    } else {
+      hours_str = hours.toString();
+    }
+
+    var hora = hours_str + ':' + hoy.getMinutes() + ':' + hoy.getSeconds() + suffix;
 
 
     var fecha_hora = fecha + ' ' + hora;
