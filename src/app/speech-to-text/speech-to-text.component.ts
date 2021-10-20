@@ -14,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import * as $ from 'jquery';
 import { GenericAcceptDialogComponent } from '../component/dialog/generic-accept-dialog/generic-accept-dialog.component';
 import { FormControl } from '@angular/forms';
-import { LanguageGroup,Language} from 'src/app/interfaces/languages.interface';
+import { LanguageGroup, Language } from 'src/app/interfaces/languages.interface';
 /** */
 interface Pokemon {
   value: string;
@@ -38,44 +38,44 @@ export class SpeechToTextComponent implements OnInit {
   @ViewChild('content', { static: false }) content: ElementRef;
 
   languageControl = new FormControl();
-  languageGroups:LanguageGroup[] = [];
+  languageGroups: LanguageGroup[] = [];
 
   pokemonControl = new FormControl();
   pokemonGroups: PokemonGroup[] = [
     {
       name: 'Grass',
       pokemon: [
-        {value: 'bulbasaur-0', viewValue: 'Bulbasaur'},
-        {value: 'oddish-1', viewValue: 'Oddish'},
-        {value: 'bellsprout-2', viewValue: 'Bellsprout'}
+        { value: 'bulbasaur-0', viewValue: 'Bulbasaur' },
+        { value: 'oddish-1', viewValue: 'Oddish' },
+        { value: 'bellsprout-2', viewValue: 'Bellsprout' }
       ]
     },
     {
       name: 'Water',
       pokemon: [
-        {value: 'squirtle-3', viewValue: 'Squirtle'},
-        {value: 'psyduck-4', viewValue: 'Psyduck'},
-        {value: 'horsea-5', viewValue: 'Horsea'}
+        { value: 'squirtle-3', viewValue: 'Squirtle' },
+        { value: 'psyduck-4', viewValue: 'Psyduck' },
+        { value: 'horsea-5', viewValue: 'Horsea' }
       ]
     },
     {
       name: 'Fire',
       disabled: true,
       pokemon: [
-        {value: 'charmander-6', viewValue: 'Charmander'},
-        {value: 'vulpix-7', viewValue: 'Vulpix'},
-        {value: 'flareon-8', viewValue: 'Flareon'}
+        { value: 'charmander-6', viewValue: 'Charmander' },
+        { value: 'vulpix-7', viewValue: 'Vulpix' },
+        { value: 'flareon-8', viewValue: 'Flareon' }
       ]
     },
     {
       name: 'Psychic',
       pokemon: [
-        {value: 'mew-9', viewValue: 'Mew'},
-        {value: 'mewtwo-10', viewValue: 'Mewtwo'},
+        { value: 'mew-9', viewValue: 'Mew' },
+        { value: 'mewtwo-10', viewValue: 'Mewtwo' },
       ]
     }
   ];
-  
+
   /*Iconos*/
   faCheck = faCheck;
   faEdit = faEdit;
@@ -97,7 +97,7 @@ export class SpeechToTextComponent implements OnInit {
   imageBase64: any;
 
   btn_copy = false;
-  lang:any;
+  lang: any;
 
 
   constructor(
@@ -108,7 +108,7 @@ export class SpeechToTextComponent implements OnInit {
   ) {
 
     this.lang = this.service.languages;
-    
+
     let name = localStorage.getItem("name");
     if (name) {
       this.name = name;
@@ -168,8 +168,41 @@ export class SpeechToTextComponent implements OnInit {
     });
   }
 
+  getHoraActual() {
+    var hoy = new Date();
+    var fecha = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
+    var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
+    var fecha_hora = fecha + ' ' + hora;
+    return fecha_hora;
+  }
+
   //Genera un PDF
   async generarPDF() {
+
+    let fecha_actual = this.getHoraActual();
+
+    let table_content: any[] = [
+      [{ text: 'Producto Id', style: 'header_table' }, { text: 'Producto', style: "header_table" }, { text: 'Observación', style: 'header_table' }],
+    ]
+
+    let text_print = this.service.text;
+    let _text = text_print.split("\n");
+    _text.forEach(element => {
+      let __text = element.split(",,");
+      if (__text.length == 2) {
+        let row = ['', __text[0], __text[1]]
+        table_content.push(row);
+      } else {
+        let text_value = ""
+        for (let index = 0; index < __text.length; index++) {
+          if (index != 0) {
+            text_value = text_value + __text[index]
+          }
+        }
+        let row = ['', __text[0], text_value]
+        table_content.push(row);
+      }
+    });
 
     //Logos convertidos a base64
     await this.generateBase64('/assets/img/empresa_logo.jpg');
@@ -181,22 +214,107 @@ export class SpeechToTextComponent implements OnInit {
 
     //Cuerpo del pdf
     const pdfDefinition: any = {
+      pageSize: 'LETTER',
+      pageMargins: [20, 110, 20, 80],
+      footer: (currentPage, pageCount, pageSize) => {
+        return [
+          {
+            layout: 'noBorders',
+            table: {
+              widths: ['40%', '50%', '10%'],
+
+              body: [
+                [
+                  { text: `Atendió: ${this.name}`, bold: true },
+                  //{ text: 'blob:http://localhost:4200/be8bcf5c-2119-43a5-b419-b77b3f9a99e2', style: 'gray_font' }, ''
+                  '', ''
+                ],
+                [
+                  {
+                    layout: 'noBorders',
+                    table: {
+                      widths: ['*', '*'],
+
+                      body: [
+                        ['',''],
+                        ['',''],
+                        [
+                          { text: `${fecha_actual}`, style: 'gray_font_bottom' },
+                          { text: ` Página ${currentPage} de ${pageCount}`,fontSize:8 }
+                        ]
+                      ]
+                    }
+                  },
+                  //{ text: `\n\n${fecha_actual}. Página ${currentPage} de ${pageCount}`, style: 'gray_font_bottom' },
+                  { text: 'PBX: 2259-3232 / 6a. Ave \"A\" 13-25 Zona 9, Guatemala/ info@imcguate.com\ndrcabreramancio@imcguate.com\t5552-417\t/IMCCabreraMancio/\nwww.imcguate.com', style: 'blue_font' },
+                  {
+                    image: this.logo_desarrollador,
+                    width: 50,
+                    //absolutePosition: { x: 540, y: 715 }
+                  }]
+              ]
+            },
+            margin: [20, 10, 10, 250]
+          }
+        ];
+      },
+      header: () => {
+        return [
+          {
+            text: "Receta", style: "title", margin: [20, 30, 10, 250]
+          },
+          {
+            image: this.logo_empresa,
+            width: 115,
+            absolutePosition: { x: 480, y: 0 }
+          }
+        ];
+      },
       content: [
         {
-          image: this.logo_empresa,
-          width: 115,
-          absolutePosition: { x: 450, y: 0 }
-        },
-        {
-          text: `\n\n\n\n\n${this.name}\n\n${this.service.text}`,
-          // text: 'Lorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-        },
-        {
-          image: this.logo_desarrollador,
-          width: 50,
-          absolutePosition: { x: 515, y: 780 }
+          layout: 'headerLineOnly',
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 1,
+            widths: ['15%', '35%', '50%'],
+            body: table_content
+          }
+
+          // text: `\n\n\n\n\n${this.name}\n\n${this.service.text}`,
+          //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
         }
-      ]
+      ],
+      styles: {
+        title: {
+          bold: true,
+          color: "#860d0d",
+          alignment: 'center',
+          fontSize: 14
+        },
+        header_table: {
+          bold: true,
+          color: "#860d0d",
+          alignment: 'left',
+          fontSize: 11
+        },
+        gray_font: {
+          fontSize: 8,
+          color: '#7f7f7f',
+          alignment: 'center',
+        },
+        gray_font_bottom: {
+          fontSize: 8,
+          color: '#7f7f7f',
+          alignment: 'left',
+        },
+        blue_font: {
+          fontSize: 8,
+          color: '#0000ff',
+          alignment: 'center',
+        }
+
+      }
     }
 
     //crea un pdf
@@ -206,17 +324,21 @@ export class SpeechToTextComponent implements OnInit {
     *Si está activo se usan las funciones del servicio
     *sino se hace una impresion nativa
     */
+
+    await this.getConnection();
+    if (this.service_print_on != 1) {
+      pdf.print();
+    } else {
+      await this.getPrinter();
+      this.printPDf();
+    }
+    /*
     if (pdfDefinition.content[1].text) {
-      await this.getConnection();
-      if (this.service_print_on != 1) {
-        pdf.print();
-      } else {
-        await this.getPrinter();
-        this.printPDf();
-      }
+     
     } else {
       alert("No hay texto que imprimir");
     }
+    */
     //pdf.open();
   }
 
@@ -226,7 +348,7 @@ export class SpeechToTextComponent implements OnInit {
     //Muestra dialogo con las impresoras unstaladas
     const dialogRef = this.dialog.open(DialogOptionComponent, {
       data: {
-        verdadero:"Imprimir",
+        verdadero: "Imprimir",
         tittle: "Imprimir:",
         options: this.printers
       }
@@ -249,26 +371,26 @@ export class SpeechToTextComponent implements OnInit {
         //Consumo api para imprimir, falta controlar respuestas
         this._printService.postPrintText(settings).subscribe(
           res => {
-           let result:number = <number>res; 
-           console.log(res);
+            let result: number = <number>res;
+            console.log(res);
 
-           if (result == 2) {
-             this.dialogAccept("Impresora no disponible.",`Verifique que ${printer} esté disponible para imprimir.`);
-           }
+            if (result == 2) {
+              this.dialogAccept("Impresora no disponible.", `Verifique que ${printer} esté disponible para imprimir.`);
+            }
 
           },
           err => {
             console.error(err);
-            
-            this.dialogAccept("Algo salió mal",err.error);
+
+            this.dialogAccept("Algo salió mal", err.error);
           }
         );
       }
     });
   }
 
-   //Dialogo con un texto y un boton de aceptar
-   dialogAccept(tittle: string, description:string) {
+  //Dialogo con un texto y un boton de aceptar
+  dialogAccept(tittle: string, description: string) {
     this.dialog.open(GenericAcceptDialogComponent, {
       data: {
         tittle: tittle,
