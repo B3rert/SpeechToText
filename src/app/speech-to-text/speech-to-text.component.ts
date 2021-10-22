@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { VoiceRecognitionService } from '../service/voice-recognition.service'
 import { PrintService } from '../service/print.service'
-import { DataPrint } from '../interfaces/settinges.service'
+import { DataPrint } from '../interfaces/settinges.interface'
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { MatDialog } from '@angular/material/dialog';
@@ -224,12 +224,12 @@ export class SpeechToTextComponent implements OnInit {
     });
 
     //Logos convertidos a base64
-    // await this.generateBase64('/app/img/empresa_logo.jpg');
-    await this.generateBase64('/assets/img/empresa_logo.jpg');
+    await this.generateBase64('/app/img/empresa_logo.jpg');
+    //await this.generateBase64('/assets/img/empresa_logo.jpg');
     this.logo_empresa = this.imageBase64;
 
-    await this.generateBase64('/assets/img/demosoft.jpg');
-    //await this.generateBase64('/app/img/demosoft.jfif');
+    //await this.generateBase64('/assets/img/demosoft.jpg');
+    await this.generateBase64('/app/img/demosoft.jfif');
     this.logo_desarrollador = this.imageBase64;
     // this.stopService();
 
@@ -500,6 +500,11 @@ export class SpeechToTextComponent implements OnInit {
 
   //Imprime a través de print service
   printPDf() {
+    let format = localStorage.getItem("format");
+    if (!format) {
+      format = "Columnas"
+    }
+
     //Muestra dialogo con las impresoras unstaladas
     const dialogRef = this.dialog.open(DialogOptionComponent, {
       data: {
@@ -519,7 +524,14 @@ export class SpeechToTextComponent implements OnInit {
         //Parametros necesarios para imprimir <<Api print en PritService>>
         let settings: DataPrint = {
           "printer": printer, //Nombre de la impresora
-          "doc": `${this.name}\n\n${this.service.text}`, //Texto del documento
+          "doc": this.service.text, //Texto del documento
+          "name_emited":this.name,
+          "report_title":this.title_report,
+          "column1":this.column1,
+          "column2":this.column2,
+          "column3":this.column3,
+          "text_info":this.text_info,
+          "format":format,
           "copies": copies //Numero de copias
         }
 
