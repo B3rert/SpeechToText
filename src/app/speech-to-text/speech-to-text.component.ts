@@ -173,7 +173,7 @@ export class SpeechToTextComponent implements OnInit {
     //if 00 then it is 12 am
     hours = (hours.toString() == '00') ? 12 : hours;
 
-    let hours_str:string;
+    let hours_str: string;
 
     if (hours.toString().length == 1) {
       hours_str = `0${hours}`;
@@ -187,7 +187,14 @@ export class SpeechToTextComponent implements OnInit {
     var fecha_hora = fecha + ' ' + hora;
     return fecha_hora;
   }
-
+  //Transforma la primera letra de un texto en Mayuscula
+  transformCapitalize(text: string) {
+    text = text.toLocaleLowerCase();
+    function capitalizarPrimeraLetra(str: string) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    return capitalizarPrimeraLetra(text);
+  }
 
   //Genera un PDF
   async generarPDF() {
@@ -209,7 +216,7 @@ export class SpeechToTextComponent implements OnInit {
     _text.forEach(element => {
       let __text = element.split(",,");
       if (__text.length == 2) {
-        let row = ['', __text[0], __text[1]]
+        let row = ['', __text[0].toUpperCase(), this.transformCapitalize(this.service.correctText(__text[1],3) )];
         table_content.push(row);
       } else {
         let text_value = ""
@@ -218,18 +225,18 @@ export class SpeechToTextComponent implements OnInit {
             text_value = text_value + __text[index]
           }
         }
-        let row = ['', __text[0], text_value]
+        let row = ['', __text[0].toUpperCase(), this.transformCapitalize(this.service.correctText(text_value,3))];
         table_content.push(row);
       }
     });
 
     //Logos convertidos a base64
-    await this.generateBase64('/app/img/empresa_logo.jpg');
-    //await this.generateBase64('/assets/img/empresa_logo.jpg');
+    //await this.generateBase64('/app/img/empresa_logo.jpg');
+    await this.generateBase64('/assets/img/empresa_logo.jpg');
     this.logo_empresa = this.imageBase64;
 
-    //await this.generateBase64('/assets/img/demosoft.jpg');
-    await this.generateBase64('/app/img/demosoft.jfif');
+    await this.generateBase64('/assets/img/demosoft.jpg');
+    //await this.generateBase64('/app/img/demosoft.jfif');
     this.logo_desarrollador = this.imageBase64;
     // this.stopService();
 
@@ -289,7 +296,7 @@ export class SpeechToTextComponent implements OnInit {
               text: this.title_report, style: "title", margin: [0, 30, 0, 0]
             },
             {
-              text: this.name, bold:true, margin: [20, 33, 0, 0]
+              text: this.name, bold: true, margin: [20, 33, 0, 0]
             },
             {
               image: this.logo_empresa,
@@ -396,7 +403,7 @@ export class SpeechToTextComponent implements OnInit {
               text: this.title_report, style: "title", margin: [0, 30, 0, 0]
             },
             {
-              text: this.name,  bold:true, margin: [20, 33, 0, 0]
+              text: this.name, bold: true, margin: [20, 33, 0, 0]
             },
             {
               image: this.logo_empresa,
@@ -415,7 +422,7 @@ export class SpeechToTextComponent implements OnInit {
               widths: ['100%'],
               body: [
                 [{ text: this.column3, style: 'header_table' }],
-                [this.service.text]
+                [this.transformCapitalize(this.service.text)]
               ]
             }
 
@@ -458,13 +465,13 @@ export class SpeechToTextComponent implements OnInit {
       pdfDefinition = {
         pageSize: 'LETTER',
         pageMargins: [20, 60],
-        
+
         content: [
           {
-            text:this.name,  bold:true
+            text: this.name, bold: true
           },
           {
-            
+
             text: `\n${this.service.text}`,
             //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
           }
@@ -525,13 +532,13 @@ export class SpeechToTextComponent implements OnInit {
         let settings: DataPrint = {
           "printer": printer, //Nombre de la impresora
           "doc": this.service.text, //Texto del documento
-          "name_emited":this.name,
-          "report_title":this.title_report,
-          "column1":this.column1,
-          "column2":this.column2,
-          "column3":this.column3,
-          "text_info":this.text_info,
-          "format":format,
+          "name_emited": this.name,
+          "report_title": this.title_report,
+          "column1": this.column1,
+          "column2": this.column2,
+          "column3": this.column3,
+          "text_info": this.text_info,
+          "format": format,
           "copies": copies //Numero de copias
         }
 
