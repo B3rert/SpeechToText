@@ -8,11 +8,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogOptionComponent } from '../component/dialog/dialog-option/dialog-option.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { HttpClient } from '@angular/common/http';
-
 /**Iconos */
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faCogs } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faBan } from '@fortawesome/free-solid-svg-icons';
 
 /***/
 import * as $ from 'jquery';
@@ -23,17 +24,52 @@ import { Language } from '../interfaces/languages.interface';
 
 declare var configuraciones: any;
 
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import { default as _rollupMoment } from 'moment';
+import { FormControl } from '@angular/forms';
+import { DialogDateComponent } from '../component/dialog/dialog-date/dialog-date.component';
+
+const moment = _rollupMoment || _moment;
+
+// See the Moment.js docs for the meaning of these formats:
+// https://momentjs.com/docs/#/displaying/format/
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY'
+  },
+};
 
 @Component({
   selector: 'app-speech-to-text',
   templateUrl: './speech-to-text.component.html',
   styleUrls: ['./speech-to-text.component.scss'],
-  providers: [VoiceRecognitionService, PrintService]
+  providers: [
+    VoiceRecognitionService,
+    PrintService,
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
+  ]
 })
 export class SpeechToTextComponent implements OnInit {
-
+  date = new FormControl(moment());
+  //hour_input: any = "12:00 PM";
+  hour_input: any = "";
   @ViewChild('content', { static: false }) content: ElementRef;
-
+  
   selectedLanguage: string;
   languages: Language[] = [];
 
@@ -41,14 +77,16 @@ export class SpeechToTextComponent implements OnInit {
   faCheck = faCheck;
   faEdit = faEdit;
   faCogs = faCogs;
+  faPlus = faPlus;
+  faBan = faBan;
 
   name: string;
   save_name = false;
-
+  
   service_start = false;
   service_on = false;
   text_button = 'Iniciar';
-
+  
   service_print_on = 0;
   print_service = false;
 
@@ -65,6 +103,16 @@ export class SpeechToTextComponent implements OnInit {
   column2 = configuraciones.column2;
   column3 = configuraciones.column3;
   text_info = configuraciones.text_info;
+  text_finally = configuraciones.text_finally;
+
+  nueva_cita_fecha: string = "";
+  view_cita_fecha = false;
+  view_cita_fecha_add = true;
+  edit_cita_fecha = false;
+  printDate = true;
+
+  print_text_finally = `*${this.text_finally} ${this.nueva_cita_fecha}*`;
+
 
   constructor(
     public service: VoiceRecognitionService,
@@ -72,6 +120,8 @@ export class SpeechToTextComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient
   ) {
+
+    this.hour_input = this.getHoraActual(4);
 
     this.selectedLanguage = service.lang;
     this.languages = service.languge;
@@ -98,7 +148,6 @@ export class SpeechToTextComponent implements OnInit {
       this.getPrinter();
     }
   }
-
 
   //Guarda el nombre del emisor
   saveName() {
@@ -134,7 +183,6 @@ export class SpeechToTextComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
 
-
       }
     });
   }
@@ -158,19 +206,29 @@ export class SpeechToTextComponent implements OnInit {
     });
   }
 
-  getHoraActual() {
+  confirmDate(){
+    //Formate date
+    var fecha = this.date.value._d.getDate() + '/' + (this.date.value._d.getMonth() + 1) + '/' + this.date.value._d.getFullYear();
+    this.nueva_cita_fecha = fecha + " " + this.hour_input;
+    this.edit_cita_fecha = false;
+    this.view_cita_fecha_add = false;
+    this.view_cita_fecha = true;
+  }
+
+  addAppointment() {
+    this.hour_input = this.getHoraActual(4);
+    this.edit_cita_fecha = true;
+    this.view_cita_fecha_add = false;
+    this.view_cita_fecha = false;
+  }
+
+  getHoraActual(opt: number) {
     var hoy = new Date();
     var fecha = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
 
     let hours = hoy.getHours();
-
-    //it is pm if hours from 12 onwards
     let suffix = (hours >= 12) ? ' p.m.' : ' a.m.';
-
-    //only -12 from hours if it is greater than 12 (if not back at mid night)
     hours = (hours > 12) ? hours - 12 : hours;
-
-    //if 00 then it is 12 am
     hours = (hours.toString() == '00') ? 12 : hours;
 
     let hours_str: string;
@@ -183,9 +241,33 @@ export class SpeechToTextComponent implements OnInit {
 
     var hora = hours_str + ':' + hoy.getMinutes() + ':' + hoy.getSeconds() + suffix;
 
+    //opt 1: hora actual
+    //opt 2: fecha actual
+    //opt 3: fecha y hora actual
+    //opt 4: hora y minutos
+    if (opt == 1) {
+      return hora;
+    } else if (opt == 2) {
+      return fecha;
+    } else if (opt == 3) {
+      return fecha + " " + hora;
+    } else if (opt == 4) {
+      // return "1:16 PM"
+      let hours = hoy.getHours();
+      let _suffix = (hours >= 12) ? ' PM' : ' AM';
+      hours = (hours > 12) ? hours - 12 : hours;
+      hours = (hours.toString() == '00') ? 12 : hours;
 
-    var fecha_hora = fecha + ' ' + hora;
-    return fecha_hora;
+      let minutes = hoy.getMinutes();
+      let minutes_str: string;
+      if (minutes.toString().length == 1) {
+        minutes_str = `0${minutes}`;
+      } else {
+        minutes_str = minutes.toString();
+      }
+      
+      return hours + ":" + minutes_str + _suffix;
+    }
   }
   //Transforma la primera letra de un texto en Mayuscula
   transformCapitalize(text: string) {
@@ -198,14 +280,18 @@ export class SpeechToTextComponent implements OnInit {
 
   //Genera un PDF
   async generarPDF() {
+    this.print_text_finally = `*${this.text_finally} ${this.nueva_cita_fecha}*`;
 
     let format = localStorage.getItem("format");
     if (!format) {
       format = "Columnas"
     }
 
+    if(!this.printDate){
+      this.print_text_finally = "";
+    }
 
-    let fecha_actual = this.getHoraActual();
+    let fecha_actual = this.getHoraActual(3);
 
     let table_content: any[] = [
       [{ text: this.column1, style: 'header_table' }, { text: this.column2, style: "header_table" }, { text: this.column3, style: 'header_table' }],
@@ -216,7 +302,7 @@ export class SpeechToTextComponent implements OnInit {
     _text.forEach(element => {
       let __text = element.split(",,");
       if (__text.length == 2) {
-        let row = ['', __text[0].toUpperCase(), this.transformCapitalize(this.service.correctText(__text[1],3) )];
+        let row = ['', __text[0].toUpperCase(), this.transformCapitalize(this.service.correctText(__text[1], 3))];
         table_content.push(row);
       } else {
         let text_value = ""
@@ -225,7 +311,7 @@ export class SpeechToTextComponent implements OnInit {
             text_value = text_value + __text[index]
           }
         }
-        let row = ['', __text[0].toUpperCase(), this.transformCapitalize(this.service.correctText(text_value,3))];
+        let row = ['', __text[0].toUpperCase(), this.transformCapitalize(this.service.correctText(text_value, 3))];
         table_content.push(row);
       }
     });
@@ -239,7 +325,6 @@ export class SpeechToTextComponent implements OnInit {
     //await this.generateBase64('/app/img/demosoft.jfif');
     this.logo_desarrollador = this.imageBase64;
     // this.stopService();
-
 
     let pdfDefinition;
 
@@ -314,13 +399,23 @@ export class SpeechToTextComponent implements OnInit {
               headerRows: 1,
               widths: ['15%', '35%', '50%'],
               body: table_content
-            }
+            },
+
 
             // text: `\n\n\n\n\n${this.name}\n\n${this.service.text}`,
             //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+          },
+          {
+            text: `\n\n${this.print_text_finally}`, style: 'date_cita'
           }
         ],
         styles: {
+          date_cita: {
+            bold: true,
+            color: "#860d0d",
+            alignment: 'center',
+            fontSize: 16
+          },
           title: {
             bold: true,
             color: "#860d0d",
@@ -428,9 +523,18 @@ export class SpeechToTextComponent implements OnInit {
 
             // text: `\n\n\n\n\n${this.name}\n\n${this.service.text}`,
             //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+          },
+          {
+            text: `\n\n${this.print_text_finally}`, style: 'date_cita'
           }
         ],
         styles: {
+          date_cita: {
+            bold: true,
+            color: "#860d0d",
+            alignment: 'center',
+            fontSize: 16
+          },
           title: {
             bold: true,
             color: "#860d0d",
@@ -474,6 +578,9 @@ export class SpeechToTextComponent implements OnInit {
 
             text: `\n${this.service.text}`,
             //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+          },
+          {
+            text: `\n\n${this.print_text_finally}`
           }
         ]
       }
@@ -503,6 +610,7 @@ export class SpeechToTextComponent implements OnInit {
     */
     //pdf.open();
   }
+
 
 
   //Imprime a través de print service

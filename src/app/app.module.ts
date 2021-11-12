@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from "@angular/common/http";
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+
 //Angular material
 
 //angularMaterial
@@ -57,6 +59,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogOptionComponent } from './component/dialog/dialog-option/dialog-option.component';
 import { GenericAcceptDialogComponent } from './component/dialog/generic-accept-dialog/generic-accept-dialog.component';
 import { DialogFormatComponent } from './component/dialog/dialog-format/dialog-format.component';
+import { DialogDateComponent } from './component/dialog/dialog-date/dialog-date.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +68,7 @@ import { DialogFormatComponent } from './component/dialog/dialog-format/dialog-f
     DialogOptionComponent,
     GenericAcceptDialogComponent,
     DialogFormatComponent,
+    DialogDateComponent,
   ],
   imports: [
     FontAwesomeModule,
@@ -73,6 +77,8 @@ import { DialogFormatComponent } from './component/dialog/dialog-format/dialog-f
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    NgxMaterialTimepickerModule,
     //Angular Material
     MatDialogModule,
     MatButtonModule,

@@ -12,7 +12,68 @@
     </div>
 </div>
 
-<div class="container" style="padding-top: 20px;">
+<div class="container container_new_cita" style="padding-top: 20px;">
+    <div class="row">
+        <div class="col">
+            <div class="d-flex">
+                <div class="nombre_user_selected">
+                    <!--view_cita_fecha-->
+                    <p *ngIf="view_cita_fecha && !view_cita_fecha_add && !edit_cita_fecha">
+                        <strong>Nueva cita:</strong> {{nueva_cita_fecha}}
+                    </p>
+                    <!--view_cita_fecha_add-->
+                    <p *ngIf="!view_cita_fecha && view_cita_fecha_add && !edit_cita_fecha">
+                        <strong>Nueva cita:</strong>
+                        <button class="button_speech" mat-stroked-button color="primary"
+                            (click)="addAppointment()">Agregar fecha
+                        </button>
+                    </p>
+                    <!--edit_cita_fecha-->
+                    <p *ngIf="!view_cita_fecha && !view_cita_fecha_add && edit_cita_fecha">
+                        <strong>Agregar fecha:</strong>
+                    </p>
+                </div>
+                <!--view_cita_fecha-->
+                <button *ngIf="view_cita_fecha && !view_cita_fecha_add && !edit_cita_fecha" mat-icon-button
+                    color="primary" class="chekk_icon" (click)="addAppointment()">
+                    <mat-icon>
+                        <fa-icon [icon]="faEdit"></fa-icon>
+                    </mat-icon>
+                </button>
+                <!--
+                <button *ngIf="view_cita_fecha && !view_cita_fecha_add && !edit_cita_fecha" mat-icon-button
+                color="primary" class="chekk_icon" style="color: rgb(177, 30, 30);">
+                <mat-icon>
+                    <fa-icon [icon]="faBan"></fa-icon>
+                </mat-icon>
+            </button>
+            -->
+            </div>
+            <!--edit_cita_fecha-->
+            <div *ngIf="!view_cita_fecha && !view_cita_fecha_add && edit_cita_fecha">
+                <mat-form-field appearance="fill" class="datetime">
+                    <mat-label>Fecha:</mat-label>
+                    <input matInput [matDatepicker]="dp" [formControl]="date" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker #dp></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="datetime">
+                    <mat-label>Hora:</mat-label>
+                    <input matInput [ngxTimepicker]="toggleTimepicker" [disableClick]="true" readonly
+                        [(ngModel)]="hour_input">
+                    <ngx-material-timepicker-toggle matSuffix [for]="toggleTimepicker"></ngx-material-timepicker-toggle>
+                    <ngx-material-timepicker #toggleTimepicker></ngx-material-timepicker>
+                </mat-form-field>
+                <button mat-icon-button color="primary" class="chekk_icon" (click)="confirmDate()">
+                    <mat-icon>
+                        <fa-icon [icon]="faCheck"></fa-icon>
+                    </mat-icon>
+                </button>
+            </div>
+
+        </div>
+       
+    </div>
     <div class="row">
         <div class="col">
             <form userName="ngForm" (ngSubmit)="saveName()" *ngIf="!save_name">
@@ -25,10 +86,11 @@
                         <fa-icon [icon]="faCheck"></fa-icon>
                     </mat-icon>
                 </button>
+
             </form>
             <div class="d-flex" *ngIf="save_name">
                 <div class="nombre_user_selected">
-                    <p>Emisor: {{name}}</p>
+                    <p><strong>Emisor:</strong> {{name}}</p>
                 </div>
                 <button mat-icon-button color="primary" class="chekk_icon" (click)="editName()">
                     <mat-icon>
@@ -38,12 +100,12 @@
             </div>
 
         </div>
-
         <div class="col">
-            <mat-form-field appearance="fill" style="float: right;">
+            <mat-form-field appearance="fill" class="f_rigth">
                 <mat-label>Idioma</mat-label>
                 <mat-select [(ngModel)]="selectedLanguage" name="language">
-                    <mat-option *ngFor="let language of languages" [value]="language.value" (click)="service.changeLang(language.value); this.service.init()">
+                    <mat-option *ngFor="let language of languages" [value]="language.value"
+                        (click)="service.changeLang(language.value); this.service.init()">
                         {{language.viewValue}}
                     </mat-option>
                 </mat-select>
@@ -53,7 +115,7 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container" style="padding-bottom: 50px;">
     <div class="center">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
@@ -79,12 +141,12 @@
                     (click)="copyMessage()">Copiado <mat-icon>done</mat-icon></button>
                 <button class="button_speech button__end" mat-stroked-button color="primary"
                     (click)="generarPDF()">Imprimir</button>
-                    
-                    <button class="button__end" mat-icon-button color="primary" (click)="selectedFormat()">
-                        <mat-icon>
-                            <fa-icon [icon]="faCogs"></fa-icon>
-                        </mat-icon>
-                    </button>
+
+                <button class="button__end" mat-icon-button color="primary" (click)="selectedFormat()">
+                    <mat-icon>
+                        <fa-icon [icon]="faCogs"></fa-icon>
+                    </mat-icon>
+                </button>
             </div>
         </div>
         <div class="row">
@@ -96,6 +158,12 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
+<div class="col">
+    <mat-slide-toggle color="primary" labelPosition="before" [(ngModel)]="printDate" class="f_rigth p_date">Imprimir cita</mat-slide-toggle>
+
+</div>
         </div>
     </div>
 </div>

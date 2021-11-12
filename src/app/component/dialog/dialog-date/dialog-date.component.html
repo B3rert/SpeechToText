@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>{{data.tittle}}</h2>
+<mat-dialog-content class="mat-typography example-radio-group">
+  <!--matPrefix coloca algo al inicio del input-->
+  <mat-form-field appearance="fill">
+    <mat-label>Fecha:</mat-label>
+    <input matInput [matDatepicker]="dp" [formControl]="date" readonly>
+    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+    <mat-datepicker #dp></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Hora:</mat-label>
+    <input matInput [ngxTimepicker]="toggleTimepicker" [disableClick]="true" readonly [(ngModel)]="data.options">
+    <ngx-material-timepicker-toggle matSuffix [for]="toggleTimepicker"></ngx-material-timepicker-toggle>
+    <ngx-material-timepicker #toggleTimepicker></ngx-material-timepicker>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false">{{data.falso}}</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="saveDate()">{{data.verdadero}}</button>
+</mat-dialog-actions>

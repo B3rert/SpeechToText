@@ -5,6 +5,7 @@ var configuraciones = {
     column2:"Producto",
     column3:"Observación",
     text_info:"PBX: 2259-3232 / 6a. Ave \"A\" 13-25 Zona 9, Guatemala/ info@imcguate.com\ndrcabreramancio@imcguate.com\t5552-417\t/IMCCabreraMancio/\nwww.imcguate.com",
+    text_finally:"Nueva Cita:",
     language_default:"es-GT"
 }
  //urlApis: 'http://ds.demosoftonline.com:88/host/modegt/BAApiStore/api/',

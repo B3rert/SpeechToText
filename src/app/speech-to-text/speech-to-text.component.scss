@@ -80,3 +80,31 @@
 .copiado mat-icon{
     font-size: 20px;
 }
+
+.datetime{
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 165px;
+}
+
+.datetime__icon{
+    color: rgba(0,0,0,.54);
+}
+
+.container_new_cita{
+    color: #3f51b5 !important;
+}
+
+.timepicker[_ngcontent-ctv-c47] {
+    position: fixed;
+    z-index: 20000 !important;
+}
+
+.f_rigth{
+    float: right;
+}
+
+.p_date{
+    margin-top: 10px;
+    color: #3f51b5;
+}
