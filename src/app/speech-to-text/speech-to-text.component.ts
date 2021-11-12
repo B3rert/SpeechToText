@@ -60,7 +60,6 @@ export const MY_FORMATS = {
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
   ]
 })
@@ -68,8 +67,9 @@ export class SpeechToTextComponent implements OnInit {
   date = new FormControl(moment());
   //hour_input: any = "12:00 PM";
   hour_input: any = "";
+
   @ViewChild('content', { static: false }) content: ElementRef;
-  
+
   selectedLanguage: string;
   languages: Language[] = [];
 
@@ -82,11 +82,11 @@ export class SpeechToTextComponent implements OnInit {
 
   name: string;
   save_name = false;
-  
+
   service_start = false;
   service_on = false;
   text_button = 'Iniciar';
-  
+
   service_print_on = 0;
   print_service = false;
 
@@ -113,19 +113,15 @@ export class SpeechToTextComponent implements OnInit {
 
   print_text_finally = `*${this.text_finally} ${this.nueva_cita_fecha}*`;
 
-
   constructor(
     public service: VoiceRecognitionService,
     private _printService: PrintService,
     private dialog: MatDialog,
     private http: HttpClient
   ) {
-
     this.hour_input = this.getHoraActual(4);
-
     this.selectedLanguage = service.lang;
     this.languages = service.languge;
-
     let name = localStorage.getItem("name");
     if (name) {
       this.name = name;
@@ -206,7 +202,8 @@ export class SpeechToTextComponent implements OnInit {
     });
   }
 
-  confirmDate(){
+  //Confirmar la fecha y hora de la cita
+  confirmDate() {
     //Formate date
     var fecha = this.date.value._d.getDate() + '/' + (this.date.value._d.getMonth() + 1) + '/' + this.date.value._d.getFullYear();
     this.nueva_cita_fecha = fecha + " " + this.hour_input;
@@ -215,6 +212,7 @@ export class SpeechToTextComponent implements OnInit {
     this.view_cita_fecha = true;
   }
 
+  //Agregar fecha y hora a la cita
   addAppointment() {
     this.hour_input = this.getHoraActual(4);
     this.edit_cita_fecha = true;
@@ -222,6 +220,7 @@ export class SpeechToTextComponent implements OnInit {
     this.view_cita_fecha = false;
   }
 
+  //Obtiene la fecha y hora actual
   getHoraActual(opt: number) {
     var hoy = new Date();
     var fecha = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
@@ -241,10 +240,11 @@ export class SpeechToTextComponent implements OnInit {
 
     var hora = hours_str + ':' + hoy.getMinutes() + ':' + hoy.getSeconds() + suffix;
 
-    //opt 1: hora actual
-    //opt 2: fecha actual
-    //opt 3: fecha y hora actual
-    //opt 4: hora y minutos
+    /*opt 1: hora actual
+    *opt 2: fecha actual
+    *opt 3: fecha y hora actual
+    *opt 4: hora y minutos HH:MM TT
+    */
     if (opt == 1) {
       return hora;
     } else if (opt == 2) {
@@ -265,7 +265,6 @@ export class SpeechToTextComponent implements OnInit {
       } else {
         minutes_str = minutes.toString();
       }
-      
       return hours + ":" + minutes_str + _suffix;
     }
   }
@@ -280,6 +279,7 @@ export class SpeechToTextComponent implements OnInit {
 
   //Genera un PDF
   async generarPDF() {
+    //texto al final del documento
     this.print_text_finally = `*${this.text_finally} ${this.nueva_cita_fecha}*`;
 
     let format = localStorage.getItem("format");
@@ -287,7 +287,7 @@ export class SpeechToTextComponent implements OnInit {
       format = "Columnas"
     }
 
-    if(!this.printDate){
+    if (!this.printDate) {
       this.print_text_finally = "";
     }
 
@@ -295,7 +295,7 @@ export class SpeechToTextComponent implements OnInit {
 
     let table_content: any[] = [
       [{ text: this.column1, style: 'header_table' }, { text: this.column2, style: "header_table" }, { text: this.column3, style: 'header_table' }],
-    ]
+    ];
 
     let text_print = this.service.text;
     let _text = text_print.split("\n");
@@ -520,7 +520,6 @@ export class SpeechToTextComponent implements OnInit {
                 [this.transformCapitalize(this.service.text)]
               ]
             }
-
             // text: `\n\n\n\n\n${this.name}\n\n${this.service.text}`,
             //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
           },
@@ -562,7 +561,6 @@ export class SpeechToTextComponent implements OnInit {
             color: '#0000ff',
             alignment: 'center',
           }
-
         }
       }
     } else if (format == "Sin Formato") {
@@ -575,7 +573,6 @@ export class SpeechToTextComponent implements OnInit {
             text: this.name, bold: true
           },
           {
-
             text: `\n${this.service.text}`,
             //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
           },
@@ -659,7 +656,6 @@ export class SpeechToTextComponent implements OnInit {
             if (result == 2) {
               this.dialogAccept("Impresora no disponible.", `Verifique que ${printer} esté disponible para imprimir.`);
             }
-
           },
           err => {
             console.error(err);
@@ -680,7 +676,6 @@ export class SpeechToTextComponent implements OnInit {
       }
     });
   }
-
 
   //Confirmar conexion con PrintService
   async getConnection(): Promise<void> {
@@ -759,8 +754,6 @@ export class SpeechToTextComponent implements OnInit {
 
   //Copia el texto que se ha reconocido al portapapeles
   copyMessage() {
-
-
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
