@@ -12,35 +12,52 @@
     </div>
 </div>
 
-<div class="container container_new_cita" style="padding-top: 20px;">
+<div class="container pad_top" *ngIf="!is_login">
     <div class="row">
-        <div class="col">
-            <div class="d-flex">
-                <div class="nombre_user_selected">
-                    <!--view_cita_fecha-->
-                    <p *ngIf="view_cita_fecha && !view_cita_fecha_add && !edit_cita_fecha">
-                        <strong>Nueva cita:</strong> {{nueva_cita_fecha}}
-                    </p>
-                    <!--view_cita_fecha_add-->
-                    <p *ngIf="!view_cita_fecha && view_cita_fecha_add && !edit_cita_fecha">
-                        <strong>Nueva cita:</strong>
-                        <button class="button_speech" mat-stroked-button color="primary"
-                            (click)="addAppointment()">Agregar fecha
-                        </button>
-                    </p>
-                    <!--edit_cita_fecha-->
-                    <p *ngIf="!view_cita_fecha && !view_cita_fecha_add && edit_cita_fecha">
-                        <strong>Agregar fecha:</strong>
-                    </p>
+        <div class="col-md-5 mx-auto">
+            <div class="card text-center">
+                <div class="card-body">
+                    <form>
+                        <input type="text" class="form-control input__login" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="Clave para activar el producto">
+                        <button type="submit" class="btn btn-outline-dark btn-sm button__login">Activar</button>
+                    </form>
                 </div>
-                <!--view_cita_fecha-->
-                <button *ngIf="view_cita_fecha && !view_cita_fecha_add && !edit_cita_fecha" mat-icon-button
-                    color="primary" class="chekk_icon" (click)="addAppointment()">
-                    <mat-icon>
-                        <fa-icon [icon]="faEdit"></fa-icon>
-                    </mat-icon>
-                </button>
-                <!--
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="is_login">
+    <div class="container container_new_cita pad_top" >
+        <div class="row">
+            <div class="col">
+                <div class="d-flex">
+                    <div class="nombre_user_selected">
+                        <!--view_cita_fecha-->
+                        <p *ngIf="view_cita_fecha && !view_cita_fecha_add && !edit_cita_fecha">
+                            <strong>Nueva cita:</strong> {{nueva_cita_fecha}}
+                        </p>
+                        <!--view_cita_fecha_add-->
+                        <p *ngIf="!view_cita_fecha && view_cita_fecha_add && !edit_cita_fecha">
+                            <strong>Nueva cita:</strong>
+                            <button class="button_speech" mat-stroked-button color="primary"
+                                (click)="addAppointment()">Agregar fecha
+                            </button>
+                        </p>
+                        <!--edit_cita_fecha-->
+                        <p *ngIf="!view_cita_fecha && !view_cita_fecha_add && edit_cita_fecha">
+                            <strong>Agregar fecha:</strong>
+                        </p>
+                    </div>
+                    <!--view_cita_fecha-->
+                    <button *ngIf="view_cita_fecha && !view_cita_fecha_add && !edit_cita_fecha" mat-icon-button
+                        color="primary" class="chekk_icon" (click)="addAppointment()">
+                        <mat-icon>
+                            <fa-icon [icon]="faEdit"></fa-icon>
+                        </mat-icon>
+                    </button>
+                    <!--
                 <button *ngIf="view_cita_fecha && !view_cita_fecha_add && !edit_cita_fecha" mat-icon-button
                 color="primary" class="chekk_icon" style="color: rgb(177, 30, 30);">
                 <mat-icon>
@@ -48,122 +65,126 @@
                 </mat-icon>
             </button>
             -->
-            </div>
-            <!--edit_cita_fecha-->
-            <div *ngIf="!view_cita_fecha && !view_cita_fecha_add && edit_cita_fecha">
-                <mat-form-field appearance="fill" class="datetime">
-                    <mat-label>Fecha:</mat-label>
-                    <input matInput [matDatepicker]="dp" [formControl]="date" readonly>
-                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                    <mat-datepicker #dp></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="datetime">
-                    <mat-label>Hora:</mat-label>
-                    <input matInput [ngxTimepicker]="toggleTimepicker" [disableClick]="true" readonly
-                        [(ngModel)]="hour_input">
-                    <ngx-material-timepicker-toggle matSuffix [for]="toggleTimepicker"></ngx-material-timepicker-toggle>
-                    <ngx-material-timepicker #toggleTimepicker></ngx-material-timepicker>
-                </mat-form-field>
-                <button mat-icon-button color="primary" class="chekk_icon" (click)="confirmDate()">
-                    <mat-icon>
-                        <fa-icon [icon]="faCheck"></fa-icon>
-                    </mat-icon>
-                </button>
-            </div>
-
-        </div>
-       
-    </div>
-    <div class="row">
-        <div class="col">
-            <form userName="ngForm" (ngSubmit)="saveName()" *ngIf="!save_name">
-                <mat-form-field class="neme_user" appearance="fill">
-                    <mat-label>Nombre</mat-label>
-                    <input matInput name="user" #user="ngModel" [(ngModel)]="name">
-                </mat-form-field>
-                <button mat-icon-button color="primary" class="chekk_icon" type="submit">
-                    <mat-icon>
-                        <fa-icon [icon]="faCheck"></fa-icon>
-                    </mat-icon>
-                </button>
-
-            </form>
-            <div class="d-flex" *ngIf="save_name">
-                <div class="nombre_user_selected">
-                    <p><strong>Emisor:</strong> {{name}}</p>
                 </div>
-                <button mat-icon-button color="primary" class="chekk_icon" (click)="editName()">
-                    <mat-icon>
-                        <fa-icon [icon]="faEdit"></fa-icon>
-                    </mat-icon>
-                </button>
-            </div>
-
-        </div>
-        <div class="col">
-            <mat-form-field appearance="fill" class="f_rigth">
-                <mat-label>Idioma</mat-label>
-                <mat-select [(ngModel)]="selectedLanguage" name="language">
-                    <mat-option *ngFor="let language of languages" [value]="language.value"
-                        (click)="service.changeLang(language.value); this.service.init()">
-                        {{language.viewValue}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-
-    </div>
-</div>
-
-<div class="container" style="padding-bottom: 50px;">
-    <div class="center">
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
-                <div class="form-floating ">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="texto" style="height: 350px"
-                        [(ngModel)]="service.text"></textarea>
-                    <label for="floatingTextarea2">{{service.lastText}}</label>
+                <!--edit_cita_fecha-->
+                <div *ngIf="!view_cita_fecha && !view_cita_fecha_add && edit_cita_fecha">
+                    <mat-form-field appearance="fill" class="datetime">
+                        <mat-label>Fecha:</mat-label>
+                        <input matInput [matDatepicker]="dp" [formControl]="date" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                        <mat-datepicker #dp></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="datetime">
+                        <mat-label>Hora:</mat-label>
+                        <input matInput [ngxTimepicker]="toggleTimepicker" [disableClick]="true" readonly
+                            [(ngModel)]="hour_input">
+                        <ngx-material-timepicker-toggle matSuffix [for]="toggleTimepicker">
+                        </ngx-material-timepicker-toggle>
+                        <ngx-material-timepicker #toggleTimepicker></ngx-material-timepicker>
+                    </mat-form-field>
+                    <button mat-icon-button color="primary" class="chekk_icon" (click)="confirmDate()">
+                        <mat-icon>
+                            <fa-icon [icon]="faCheck"></fa-icon>
+                        </mat-icon>
+                    </button>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 padding_20">
-                <button class="button_speech" mat-stroked-button color="primary"
-                    (click)="startService()">{{service.text_button}}
-                </button>
-                <button class="button_speech" mat-stroked-button color="primary" (click)="restartService()">Nueva
-                    Grabación</button>
-                <button class="button_speech" mat-stroked-button color="primary"
-                    (click)="deleteText()">Eliminar</button>
-                <button *ngIf="!btn_copy" class="button_speech button__end" mat-stroked-button color="primary"
-                    (click)="copyMessage()">Copiar</button>
-                <button *ngIf="btn_copy" class="button_speech button__end copiado" mat-stroked-button color="primary"
-                    (click)="copyMessage()">Copiado <mat-icon>done</mat-icon></button>
-                <button class="button_speech button__end" mat-stroked-button color="primary"
-                    (click)="generarPDF()">Imprimir</button>
 
-                <button class="button__end" mat-icon-button color="primary" (click)="selectedFormat()">
-                    <mat-icon>
-                        <fa-icon [icon]="faCogs"></fa-icon>
-                    </mat-icon>
-                </button>
             </div>
+
         </div>
         <div class="row">
             <div class="col">
-                <div *ngIf="service.service_on" class="listen_el">
-                    <p class="listen_element">Escuchando...</p>
-                    <div class="spinner-grow text-success color_point listen_element" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                <form userName="ngForm" (ngSubmit)="saveName()" *ngIf="!save_name">
+                    <mat-form-field class="neme_user" appearance="fill">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput name="user" #user="ngModel" [(ngModel)]="name">
+                    </mat-form-field>
+                    <button mat-icon-button color="primary" class="chekk_icon" type="submit">
+                        <mat-icon>
+                            <fa-icon [icon]="faCheck"></fa-icon>
+                        </mat-icon>
+                    </button>
+
+                </form>
+                <div class="d-flex" *ngIf="save_name">
+                    <div class="nombre_user_selected">
+                        <p><strong>Emisor:</strong> {{name}}</p>
+                    </div>
+                    <button mat-icon-button color="primary" class="chekk_icon" (click)="editName()">
+                        <mat-icon>
+                            <fa-icon [icon]="faEdit"></fa-icon>
+                        </mat-icon>
+                    </button>
+                </div>
+
+            </div>
+            <div class="col">
+                <mat-form-field appearance="fill" class="f_rigth">
+                    <mat-label>Idioma</mat-label>
+                    <mat-select [(ngModel)]="selectedLanguage" name="language">
+                        <mat-option *ngFor="let language of languages" [value]="language.value"
+                            (click)="service.changeLang(language.value); this.service.init()">
+                            {{language.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container" style="padding-bottom: 50px;">
+        <div class="center">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                    <div class="form-floating ">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="texto"
+                            style="height: 350px" [(ngModel)]="service.text"></textarea>
+                        <label for="floatingTextarea2">{{service.lastText}}</label>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-<div class="col">
-    <mat-slide-toggle color="primary" labelPosition="before" [(ngModel)]="printDate" class="f_rigth p_date">Imprimir cita</mat-slide-toggle>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 padding_20">
+                    <button class="button_speech" mat-stroked-button color="primary"
+                        (click)="startService()">{{service.text_button}}
+                    </button>
+                    <button class="button_speech" mat-stroked-button color="primary" (click)="restartService()">Nueva
+                        Grabación</button>
+                    <button class="button_speech" mat-stroked-button color="primary"
+                        (click)="deleteText()">Eliminar</button>
+                    <button *ngIf="!btn_copy" class="button_speech button__end" mat-stroked-button color="primary"
+                        (click)="copyMessage()">Copiar</button>
+                    <button *ngIf="btn_copy" class="button_speech button__end copiado" mat-stroked-button
+                        color="primary" (click)="copyMessage()">Copiado <mat-icon>done</mat-icon></button>
+                    <button class="button_speech button__end" mat-stroked-button color="primary"
+                        (click)="generarPDF()">Imprimir</button>
 
-</div>
+                    <button class="button__end" mat-icon-button color="primary" (click)="selectedFormat()">
+                        <mat-icon>
+                            <fa-icon [icon]="faCogs"></fa-icon>
+                        </mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div *ngIf="service.service_on" class="listen_el">
+                        <p class="listen_element">Escuchando...</p>
+                        <div class="spinner-grow text-success color_point listen_element" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-slide-toggle color="primary" labelPosition="before" [(ngModel)]="printDate"
+                        class="f_rigth p_date">
+                        Imprimir cita</mat-slide-toggle>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>

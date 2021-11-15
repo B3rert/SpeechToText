@@ -113,6 +113,8 @@ export class SpeechToTextComponent implements OnInit {
 
   print_text_finally = `*${this.text_finally} ${this.nueva_cita_fecha}*`;
 
+  is_login = true;
+
   constructor(
     public service: VoiceRecognitionService,
     private _printService: PrintService,
