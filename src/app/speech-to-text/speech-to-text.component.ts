@@ -346,12 +346,12 @@ export class SpeechToTextComponent implements OnInit {
     });
 
     //Logos convertidos a base64
-    //await this.generateBase64('/app/img/empresa_logo.jpg');
-    await this.generateBase64('/assets/img/empresa_logo.jpg');
+    await this.generateBase64('/app/img/empresa_logo.jpg');
+    //await this.generateBase64('/assets/img/empresa_logo.jpg');
     this.logo_empresa = this.imageBase64;
 
-    await this.generateBase64('/assets/img/demosoft.jpg');
-    //await this.generateBase64('/app/img/demosoft.jfif');
+   // await this.generateBase64('/assets/img/demosoft.jpg');
+    await this.generateBase64('/app/img/demosoft.jfif');
     this.logo_desarrollador = this.imageBase64;
     // this.stopService();
 
