@@ -113,7 +113,8 @@ export class SpeechToTextComponent implements OnInit {
 
   print_text_finally = `*${this.text_finally} ${this.nueva_cita_fecha}*`;
 
-  is_login = true;
+  is_login = false;
+  permnent_session = false;
 
   constructor(
     public service: VoiceRecognitionService,
@@ -787,5 +788,25 @@ export class SpeechToTextComponent implements OnInit {
     this.service.lastText = 'Reconocimiento de voz.';
     this.text_button = "Iniciar";
     this.service_on = false;
+  }
+
+  activateProduct() {
+
+    console.log(this.generateUUID());
+    console.log(this.generateUUID().length);
+    console.log(Navigator);
+    
+    //this.is_login = true;
+
+  }
+
+  generateUUID(): string {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
   }
 }

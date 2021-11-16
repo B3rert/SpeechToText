@@ -1,39 +1,39 @@
-.padding_20{
+.padding_20 {
     padding-top: 20px;
 }
 
 
 
-.button_speech{
+.button_speech {
     margin: 5px;
 }
 
-.button__end{
+.button__end {
     float: right;
 }
 
-.color_point{
+.color_point {
     //background-color: #1FCD04;
     background-color: red;
-    height: 15px;
-    width: 15px;
-    margin: 5px;
-    padding: 5px;
+    height          : 15px;
+    width           : 15px;
+    margin          : 5px;
+    padding         : 5px;
 }
 
-.listen_element{
+.listen_element {
     float: left;
 }
 
-.listen_el{
+.listen_el {
     padding-left: 5px;
 }
 
-.img_empresas{
-    height: 100px;
-    margin-top: 20px;
+.img_empresas {
+    height      : 100px;
+    margin-top  : 20px;
     margin-right: 20px;
-    margin-left: 20px;
+    margin-left : 20px;
 }
 
 
@@ -41,75 +41,75 @@
 @media screen and (max-width: 600px) {
     .img_empresas {
         height: 65px;
-    margin: 10px;
+        margin: 10px;
     }
 }
 
 @media screen and (max-width: 280px) {
     .img_empresas {
         height: 45px;
-    margin: 5px;
+        margin: 5px;
     }
 }
 
 /*Nombre de usuario*/
-.neme_user{
-    width: 200px;
-    margin: 0;
+.neme_user {
+    width  : 200px;
+    margin : 0;
     padding: 0;
 }
 
 
 
-.nombre_user_selected{
-    padding-top: 10px;
+.nombre_user_selected {
+    padding-top  : 10px;
     margin-bottom: 0 !important;
-    margin-right: 5px;
-    color: #3f51b5;
+    margin-right : 5px;
+    color        : #3f51b5;
 }
 
-.padd_mar_00{
-    margin: 0 !important;
+.padd_mar_00 {
+    margin : 0 !important;
     padding: 0 !important;
 }
 
-.copiado{
+.copiado {
     color: #3fb950;
 }
 
-.copiado mat-icon{
+.copiado mat-icon {
     font-size: 20px;
 }
 
-.datetime{
-    margin-left: 10px;
+.datetime {
+    margin-left : 10px;
     margin-right: 10px;
-    width: 165px;
+    width       : 165px;
 }
 
-.datetime__icon{
-    color: rgba(0,0,0,.54);
+.datetime__icon {
+    color: rgba(0, 0, 0, .54);
 }
 
-.container_new_cita{
+.container_new_cita {
     color: #3f51b5 !important;
 }
 
 .timepicker[_ngcontent-ctv-c47] {
     position: fixed;
-    z-index: 20000 !important;
+    z-index : 20000 !important;
 }
 
-.f_rigth{
+.f_rigth {
     float: right;
 }
 
-.p_date{
+.p_date {
     margin-top: 10px;
-    color: #3f51b5;
+    color     : #3f51b5;
 }
 
-.pad_top{
+.pad_top {
     padding-top: 20px;
 }
 
@@ -118,48 +118,48 @@
 /*Login*/
 
 .logEmpresa {
-    width: 70%;
-    height: 70%;
+    width  : 70%;
+    height : 70%;
     display: block;
-    margin: auto;
+    margin : auto;
 }
 
 .logDemo {
-    width: 35%;
-    height: 35%;
+    width  : 35%;
+    height : 35%;
     display: block;
-    margin: auto;
+    margin : auto;
 }
 
 .input__login {
-    margin-top: 10px;
+    margin-top   : 10px;
     margin-bottom: 10px;
 }
 
-.button__login{
+.button__login {
     border-radius: 25px !important;
-    width: 100% !important;
-    margin-top: 10px;
+    width        : 100% !important;
+    margin-top   : 10px;
     margin-bottom: 20px;
 }
 
-.link__login{
-    color: #82B1FF;
-    float: right;
+.link__login {
+    color           : #82B1FF;
+    float           : right;
     background-color: transparent;
-    border: none;
+    border          : none;
 }
 
-.check__login{
+.check__login {
     float: right;
 }
 
 
-.img_empresas{
-    height: 100px;
-    margin-top: 20px;
+.img_empresas {
+    height      : 100px;
+    margin-top  : 20px;
     margin-right: 20px;
-    margin-left: 20px;
+    margin-left : 20px;
 }
 
 
@@ -167,15 +167,30 @@
 @media screen and (max-width: 600px) {
     .img_empresas {
         height: 65px;
-    margin: 10px;
+        margin: 10px;
     }
 }
 
 @media screen and (max-width: 280px) {
     .img_empresas {
         height: 45px;
-    margin: 5px;
+        margin: 5px;
     }
 }
 
 /*Fin login*/
+
+/*New Form*/
+.form_control {
+    width: 100%;
+}
+
+.btn_form_control {
+    font-size : 15px;
+    margin-top: 10px;
+}
+
+.check_form_control {
+    font-size: 12px;
+    color    : rgb(118, 118, 118);
+}

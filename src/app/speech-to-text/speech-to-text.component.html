@@ -18,9 +18,31 @@
             <div class="card text-center">
                 <div class="card-body">
                     <form>
-                        <input type="text" class="form-control input__login" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" placeholder="Clave para activar el producto">
-                        <button type="submit" class="btn btn-outline-dark btn-sm button__login">Activar</button>
+                        <!--
+                        <mat-form-field appearance="outline" class="form_control">
+                            <mat-label>Clave del producto</mat-label>
+                            <input matInput #input maxlength="32" placeholder="Clave">
+                            <mat-icon matSuffix>key</mat-icon>
+                            <mat-hint align="end">{{input.value?.length || 0}}/32</mat-hint>
+                        </mat-form-field>
+                        -->
+                        <mat-form-field appearance="outline" class="form_control">
+                            <mat-label>Usuario</mat-label>
+                            <input type="text" matInput placeholder="Usuario">
+                            <mat-icon matSuffix>account_circle</mat-icon>
+
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="form_control">
+                            <mat-label>Contraseña</mat-label>
+                            <input type="password" matInput placeholder="Contraseña">
+                            <mat-icon matSuffix>key</mat-icon>
+                        </mat-form-field>
+                        <mat-checkbox color="primary" class="check_form_control" name="save_session" [(ngModel)]="permnent_session"
+                            labelPosition="before">
+                            Recordarme </mat-checkbox>
+                        <button mat-stroked-button color="primary" class="form_control btn_form_control"
+                            (click)="activateProduct()">Iniciar
+                            Sesión</button>
                     </form>
                 </div>
             </div>
@@ -29,7 +51,7 @@
 </div>
 
 <div *ngIf="is_login">
-    <div class="container container_new_cita pad_top" >
+    <div class="container container_new_cita pad_top">
         <div class="row">
             <div class="col">
                 <div class="d-flex">
