@@ -125,6 +125,7 @@ export class SpeechToTextComponent implements OnInit {
 
   print_text_finally = `*${this.text_finally} ${this.nueva_cita_fecha}*`;
 
+  is_register = true;
   is_login = false;
   permnent_session = false;
 
@@ -829,6 +830,16 @@ export class SpeechToTextComponent implements OnInit {
     }
     //this.is_login = true;
   }
+
+  changeForm(){
+    console.log("create user");
+    this.is_register ? this.is_register = false : this.is_register = true;
+  }
+
+  registerUser(){
+    console.log("register user");
+  }
+
 
   //Gnerador de UUID en base a la fecha y hora actual
   generateUUID(): string {
