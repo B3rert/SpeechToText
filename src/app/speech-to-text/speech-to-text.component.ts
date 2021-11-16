@@ -21,6 +21,7 @@ import { GenericAcceptDialogComponent } from '../component/dialog/generic-accept
 import { DialogFormatComponent } from '../component/dialog/dialog-format/dialog-format.component';
 import { Language } from '../interfaces/languages.interface';
 import { Login } from '../interfaces/login.interface';
+import { CreateUser } from '../interfaces/create-user.interface';
 /** */
 
 declare var configuraciones: any;
@@ -69,6 +70,19 @@ export class SpeechToTextComponent implements OnInit {
   data_login: Login = {
     username: "",
     password: ""
+  }
+
+  data_new_user: CreateUser = {
+    name: "",
+    lastname: "",
+    phone: "",
+    email: "",
+  }
+  error_new_user: CreateUser = {
+    name: "",
+    lastname: "",
+    phone: "",
+    email: "",
   }
 
   hide = true;
@@ -125,7 +139,7 @@ export class SpeechToTextComponent implements OnInit {
 
   print_text_finally = `*${this.text_finally} ${this.nueva_cita_fecha}*`;
 
-  is_register = true;
+  is_register = false;
   is_login = false;
   permnent_session = false;
 
@@ -790,6 +804,10 @@ export class SpeechToTextComponent implements OnInit {
     this.service_on = false;
   }
 
+
+  disable_inus = false;
+  disable_inlog = false;
+
   //Boton login Form submit
   login() {
 
@@ -814,7 +832,7 @@ export class SpeechToTextComponent implements OnInit {
       console.log(this.data_login);
 
       //las credenciales son correctas
-    
+
       if (this.permnent_session) {
         //Guarda en localStorage
         console.log("perm");
@@ -822,6 +840,14 @@ export class SpeechToTextComponent implements OnInit {
         //Guarda en sessionStorage
         console.log("no perm");
       }
+
+      this.disable_inlog = true;
+
+      setTimeout(() => {
+        this.disable_inlog = false;
+        this.data_login.password = "";
+        this.is_login = true;
+      }, 3000);
 
       //Las credenciales no son correctas
       //this.dialogAccept("Error", "Usuario o contraseña incorrectos.");
@@ -831,13 +857,66 @@ export class SpeechToTextComponent implements OnInit {
     //this.is_login = true;
   }
 
-  changeForm(){
-    console.log("create user");
+  changeForm() {
     this.is_register ? this.is_register = false : this.is_register = true;
   }
 
-  registerUser(){
-    console.log("register user");
+
+
+
+  createUser() {
+
+    let re = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+
+    let re_phone = /^[0-9]+$/;
+
+
+    if (!this.data_new_user.name) {
+      this.error_new_user.name = "Nombre requerido";
+    } else {
+      this.error_new_user.name = "";
+    }
+    if (!this.data_new_user.lastname) {
+      this.error_new_user.lastname = "Apellido requerido";
+    } else {
+      this.error_new_user.lastname = "";
+    }
+    if (!this.data_new_user.phone) {
+      this.error_new_user.phone = "Teléfono requerido";
+    } else if (!re_phone.exec(this.data_new_user.phone)) {
+      this.error_new_user.phone = "Teléfono invalido";
+    } else {
+      this.error_new_user.phone = "";
+    }
+    if (!this.data_new_user.email) {
+      this.error_new_user.email = "Correo electronico requerido";
+    } else if (!re.exec(this.data_new_user.email)) {
+      this.error_new_user.email = "Correo electronico invalido";
+    } else {
+      this.error_new_user.email = "";
+    }
+
+    if (!this.error_new_user.name && !this.error_new_user.lastname && !this.error_new_user.phone && !this.error_new_user.email) {
+
+      this.disable_inus = true;
+      console.log("register user");
+      console.log(this.data_new_user);
+
+      setTimeout(() => {                           // <<<---using ()=> syntax
+        this.dialogAccept("Registro", "Usuario registrado correctamente.");
+        this.changeForm();
+        this.disable_inus = false;
+        this.data_new_user = {
+          name: '',
+          lastname: '',
+          phone: '',
+          email: ''
+        };
+
+
+
+      }, 3000);
+    }
   }
 
 
