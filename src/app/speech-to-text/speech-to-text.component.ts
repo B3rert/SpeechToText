@@ -164,7 +164,6 @@ export class SpeechToTextComponent implements OnInit {
   }
 
   selectedFormat() {
-
     let formats: string[] = [
       "Columnas",
       "Sin Columnas",
@@ -342,7 +341,6 @@ export class SpeechToTextComponent implements OnInit {
               layout: 'noBorders',
               table: {
                 widths: ['40%', '50%', '10%'],
-
                 body: [
                   [
                     //{ text: `Atendió: ${this.name}`, bold: true },
@@ -370,7 +368,8 @@ export class SpeechToTextComponent implements OnInit {
                       image: this.logo_desarrollador,
                       width: 50,
                       //absolutePosition: { x: 540, y: 715 }
-                    }]
+                    }
+                  ]
                 ]
               },
               margin: [20, 10, 10, 250]
@@ -379,7 +378,6 @@ export class SpeechToTextComponent implements OnInit {
         },
         header: () => {
           return [
-
             {
               text: this.title_report, style: "title", margin: [0, 30, 0, 0]
             },
@@ -403,8 +401,6 @@ export class SpeechToTextComponent implements OnInit {
               widths: ['15%', '35%', '50%'],
               body: table_content
             },
-
-
             // text: `\n\n\n\n\n${this.name}\n\n${this.service.text}`,
             //text: '\n\n\n\nLorem Ipsum is simply dummy text \n of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
           },
@@ -446,7 +442,6 @@ export class SpeechToTextComponent implements OnInit {
             color: '#0000ff',
             alignment: 'center',
           }
-
         }
       }
     } else if (format == "Sin Columnas") {
@@ -459,7 +454,6 @@ export class SpeechToTextComponent implements OnInit {
               layout: 'noBorders',
               table: {
                 widths: ['40%', '50%', '10%'],
-
                 body: [
                   [
                     //{ text: `Atendió: ${this.name}`, bold: true },
@@ -496,7 +490,6 @@ export class SpeechToTextComponent implements OnInit {
         },
         header: () => {
           return [
-
             {
               text: this.title_report, style: "title", margin: [0, 30, 0, 0]
             },
@@ -611,8 +604,6 @@ export class SpeechToTextComponent implements OnInit {
     //pdf.open();
   }
 
-
-
   //Imprime a través de print service
   printPDf() {
     let format = localStorage.getItem("format");
@@ -654,15 +645,12 @@ export class SpeechToTextComponent implements OnInit {
         this._printService.postPrintText(settings).subscribe(
           res => {
             let result: number = <number>res;
-            console.log(res);
-
             if (result == 2) {
               this.dialogAccept("Impresora no disponible.", `Verifique que ${printer} esté disponible para imprimir.`);
             }
           },
           err => {
             console.error(err);
-
             this.dialogAccept("Algo salió mal", err.error);
           }
         );
@@ -789,7 +777,6 @@ export class SpeechToTextComponent implements OnInit {
     this.service_on = false;
   }
 
-
   //Boton login Form submit
   login() {
 
@@ -797,7 +784,6 @@ export class SpeechToTextComponent implements OnInit {
     console.log(this.generateUUID().length);
     
     //this.is_login = true;
-
   }
 
   //Gnerador de UUID en base a la fecha y hora actual
