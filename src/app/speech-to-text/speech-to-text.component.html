@@ -4,10 +4,16 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
+            <img class="img_empresas rounded float-start" src="/assets/img/empresa_logo.jfif" alt="Logo">
+            <!--
             <img class="img_empresas rounded float-start" src="/app/img/empresa_logo.jfif" alt="Logo">
+       -->
         </div>
         <div class="col">
+            <img class=" img_empresas rounded float-end" src="/assets/img/demosoft.jfif" alt="Logo">
+            <!--
             <img class=" img_empresas rounded float-end" src="/app/img/demosoft.jfif" alt="Logo">
+       -->
         </div>
     </div>
 </div>
@@ -37,8 +43,8 @@
                             <input type="password" matInput placeholder="Contraseña">
                             <mat-icon matSuffix>key</mat-icon>
                         </mat-form-field>
-                        <mat-checkbox color="primary" class="check_form_control" name="save_session" [(ngModel)]="permnent_session"
-                            labelPosition="before">
+                        <mat-checkbox color="primary" class="check_form_control" name="save_session"
+                            [(ngModel)]="permnent_session" labelPosition="before">
                             Recordarme </mat-checkbox>
                         <button mat-stroked-button color="primary" class="form_control btn_form_control"
                             (click)="login()">Iniciar
