@@ -778,7 +778,6 @@ export class SpeechToTextComponent implements OnInit {
         this.btn_copy = false;
       }, 1000);
     }
-
   }
 
   //elimina el texto que se ha reconocido 
@@ -790,7 +789,9 @@ export class SpeechToTextComponent implements OnInit {
     this.service_on = false;
   }
 
-  activateProduct() {
+
+  //Boton login Form submit
+  login() {
 
     console.log(this.generateUUID());
     console.log(this.generateUUID().length);
@@ -799,11 +800,12 @@ export class SpeechToTextComponent implements OnInit {
 
   }
 
+  //Gnerador de UUID en base a la fecha y hora actual
   generateUUID(): string {
-    var d = new Date().getTime();
+    var date = new Date().getTime();
     var uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = (d + Math.random() * 16) % 16 | 0;
-      d = Math.floor(d / 16);
+      var r = (date + Math.random() * 16) % 16 | 0;
+      date = Math.floor(date / 16);
       return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
     return uuid;
