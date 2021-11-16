@@ -140,7 +140,7 @@ export class SpeechToTextComponent implements OnInit {
   print_text_finally = `*${this.text_finally} ${this.nueva_cita_fecha}*`;
 
   is_register = false;
-  is_login = false;
+  is_login = true;
   permnent_session = false;
 
   constructor(
@@ -235,7 +235,7 @@ export class SpeechToTextComponent implements OnInit {
   confirmDate() {
     //Formate date
     var fecha = this.date.value._d.getDate() + '/' + (this.date.value._d.getMonth() + 1) + '/' + this.date.value._d.getFullYear();
-    this.nueva_cita_fecha = fecha + " " + this.hour_input;
+    this.nueva_cita_fecha = fecha //+ " " + this.hour_input;
     this.edit_cita_fecha = false;
     this.view_cita_fecha_add = false;
     this.view_cita_fecha = true;
@@ -803,7 +803,6 @@ export class SpeechToTextComponent implements OnInit {
     this.text_button = "Iniciar";
     this.service_on = false;
   }
-
 
   disable_inus = false;
   disable_inlog = false;
