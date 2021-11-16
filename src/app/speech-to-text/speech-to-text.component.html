@@ -23,7 +23,7 @@
         <div class="col-md-5 mx-auto">
             <div class="card text-center">
                 <div class="card-body">
-                    <form>
+                    <form loginForm="ngForm" (ngSubmit)="login()">
                         <!--
                         <mat-form-field appearance="outline" class="form_control">
                             <mat-label>Clave del producto</mat-label>
@@ -34,22 +34,31 @@
                         -->
                         <mat-form-field appearance="outline" class="form_control">
                             <mat-label>Usuario</mat-label>
-                            <input type="text" matInput placeholder="Usuario">
+                            <input type="text" matInput placeholder="Usuario" name="username" [(ngModel)]="data_login.username" autofocus>
+                            <mat-hint align="start" style="color: #f44336;" *ngIf="err_input_user">
+                                {{err_input_user}}</mat-hint>
                             <mat-icon matSuffix>account_circle</mat-icon>
 
                         </mat-form-field>
+
                         <mat-form-field appearance="outline" class="form_control">
                             <mat-label>Contraseña</mat-label>
-                            <input type="password" matInput placeholder="Contraseña">
-                            <mat-icon matSuffix>key</mat-icon>
+                            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Contraseña" name="password" [(ngModel)]="data_login.password">
+                            <mat-hint align="start" style="color: #f44336;" *ngIf="err_input_pass">
+                            {{err_input_pass}}</mat-hint>
+                            <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                                [attr.aria-pressed]="hide">
+                                <mat-icon>{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                            </button>
                         </mat-form-field>
                         <mat-checkbox color="primary" class="check_form_control" name="save_session"
                             [(ngModel)]="permnent_session" labelPosition="before">
                             Recordarme </mat-checkbox>
-                        <button mat-stroked-button color="primary" class="form_control btn_form_control"
-                            (click)="login()">Iniciar
-                            Sesión</button>
+                        <button type="submit" mat-stroked-button color="primary" class="form_control btn_form_control">
+                            Iniciar Sesión
+                        </button>
                     </form>
+                    <button class="link__login">Crear Usuario</button>
                 </div>
             </div>
         </div>

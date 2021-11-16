@@ -60,7 +60,6 @@ import { DialogOptionComponent } from './component/dialog/dialog-option/dialog-o
 import { GenericAcceptDialogComponent } from './component/dialog/generic-accept-dialog/generic-accept-dialog.component';
 import { DialogFormatComponent } from './component/dialog/dialog-format/dialog-format.component';
 import { DialogDateComponent } from './component/dialog/dialog-date/dialog-date.component';
-import { LoginComponent } from './component/login/login.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +69,6 @@ import { LoginComponent } from './component/login/login.component';
     GenericAcceptDialogComponent,
     DialogFormatComponent,
     DialogDateComponent,
-    LoginComponent,
   ],
   imports: [
     FontAwesomeModule,

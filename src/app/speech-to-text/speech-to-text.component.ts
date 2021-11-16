@@ -20,6 +20,7 @@ import * as $ from 'jquery';
 import { GenericAcceptDialogComponent } from '../component/dialog/generic-accept-dialog/generic-accept-dialog.component';
 import { DialogFormatComponent } from '../component/dialog/dialog-format/dialog-format.component';
 import { Language } from '../interfaces/languages.interface';
+import { Login } from '../interfaces/login.interface';
 /** */
 
 declare var configuraciones: any;
@@ -64,6 +65,17 @@ export const MY_FORMATS = {
   ]
 })
 export class SpeechToTextComponent implements OnInit {
+
+  data_login: Login = {
+    username: "",
+    password: ""
+  }
+
+  hide = true;
+  err_input_user: string = "";
+  err_input_pass: string = "";
+
+
   date = new FormControl(moment());
   //hour_input: any = "12:00 PM";
   hour_input: any = "";
@@ -780,9 +792,41 @@ export class SpeechToTextComponent implements OnInit {
   //Boton login Form submit
   login() {
 
-    console.log(this.generateUUID());
-    console.log(this.generateUUID().length);
+    if (!this.data_login.username) {
+      this.err_input_user = "Usuario requerido";
+    } else {
+      this.err_input_user = "";
+    }
+    if (!this.data_login.password) {
+      this.err_input_pass = "Contraseña requerida";
+    } else {
+      this.err_input_pass = "";
+    }
+
+    if (this.data_login.username && this.data_login.password) {
+
+      //vericar si las credenciales son correctas
+
+
+      console.log(this.generateUUID());
+      console.log(this.generateUUID().length);
+      console.log(this.data_login);
+
+      //las credenciales son correctas
     
+      if (this.permnent_session) {
+        //Guarda en localStorage
+        console.log("perm");
+      } else {
+        //Guarda en sessionStorage
+        console.log("no perm");
+      }
+
+      //Las credenciales no son correctas
+      //this.dialogAccept("Error", "Usuario o contraseña incorrectos.");
+
+
+    }
     //this.is_login = true;
   }
 
