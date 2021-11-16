@@ -794,7 +794,6 @@ export class SpeechToTextComponent implements OnInit {
 
     console.log(this.generateUUID());
     console.log(this.generateUUID().length);
-    console.log(Navigator);
     
     //this.is_login = true;
 
