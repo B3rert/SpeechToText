@@ -140,7 +140,7 @@ export class SpeechToTextComponent implements OnInit {
   print_text_finally = `*${this.text_finally} ${this.nueva_cita_fecha}*`;
 
   is_register = false;
-  is_login = true;
+  is_login = false;
   permnent_session = false;
 
   constructor(
