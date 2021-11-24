@@ -815,26 +815,26 @@ export class SpeechToTextComponent implements OnInit {
 
   //Boton login Form submit
   async login() {
-    
+
     //Las validaciones ya están hechas
     //Ahora falta saber cuando se va a realizar cada cosa
-/*
-    let newLicense: ParamsLicense = {
-      empresa_L: 5,
-      cuenta_correntista: 4,
-      cuenta_cta: "string",
-      application: 1,
-      fecha_Vencimiento: "2021-11-25T18:00:44.206Z",
-      orden: 1,
-      userName: "string"
-    }
-
-    await this.postLicense(newLicense);
-    //console.log("Trabajar aqui funciones");
+    /*
+        let newLicense: ParamsLicense = {
+          empresa_L: 5,
+          cuenta_correntista: 4,
+          cuenta_cta: "string",
+          application: 1,
+          fecha_Vencimiento: "2021-11-25T18:00:44.206Z",
+          orden: 1,
+          userName: "string"
+        }
     
-    return;
-    await this.getLicense("e99570e3be3942c59d11b33b3e8cb59e");
-*/
+        await this.postLicense(newLicense);
+        //console.log("Trabajar aqui funciones");
+        
+        return;
+        await this.getLicense("e99570e3be3942c59d11b33b3e8cb59e");
+    */
 
     if (!this.data_login.username) {
       this.err_input_user = "Usuario requerido";
@@ -866,24 +866,24 @@ export class SpeechToTextComponent implements OnInit {
 
       this.disable_inlog = true;
 
-/*
-      let newLicense: ParamsLicense = {
-        empresa_L: 4,
-        cuenta_correntista: 4,
-        cuenta_cta: "string",
-        application: 1,
-        fecha_Vencimiento: "2021-11-25T18:00:44.206Z",
-        orden: 1,
-        userName: "string"
-      }
-  
-      await this.postLicense(newLicense);
-      console.log("Trabajar aqui funciones");
+      /*
+            let newLicense: ParamsLicense = {
+              empresa_L: 4,
+              cuenta_correntista: 4,
+              cuenta_cta: "string",
+              application: 1,
+              fecha_Vencimiento: "2021-11-25T18:00:44.206Z",
+              orden: 1,
+              userName: "string"
+            }
+        
+            await this.postLicense(newLicense);
+            console.log("Trabajar aqui funciones");
+            
+            return;
+            await this.getLicense("e99570e3be3942c59d11b33b3e8cb59e");
       
-      return;
-      await this.getLicense("e99570e3be3942c59d11b33b3e8cb59e");
-
-      */
+            */
       setTimeout(() => {
         this.disable_inlog = false;
         this.data_login.password = "";
@@ -927,18 +927,18 @@ export class SpeechToTextComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this._licenseService.postLicense(license).subscribe(
         res => {
-          let UUID:CUUID = <CUUID>res;
+          let UUID: CUUID = <CUUID>res;
           if (UUID.status == 0) {
-            
+
             this.dialogAccept("Error", UUID.uuiid);
-          }else if (UUID.status == 1) {
+          } else if (UUID.status == 1) {
             this.dialogAccept("Succes", UUID.uuiid);
           }
           //console.log(UUID);
           resolve();
         },
         err => {
-          this.dialogAccept("Error","Internal Server Error");
+          this.dialogAccept("Error", "Internal Server Error");
           console.log(err);
           resolve();
         }
