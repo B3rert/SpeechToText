@@ -23,46 +23,57 @@
             <div class="card text-center">
                 <div class="card-body">
                     <form #loginForm="ngForm" (ngSubmit)="login()">
-                        <!--
                         <mat-form-field appearance="outline" class="form_control">
-                            <mat-label>Clave del producto</mat-label>
-                            <input matInput #input maxlength="32" placeholder="Clave">
-                            <mat-icon matSuffix>key</mat-icon>
-                            <mat-hint align="end">{{input.value?.length || 0}}/32</mat-hint>
+                            <mat-label>Nombre</mat-label>
+                            <input type="text" matInput placeholder="Nombre" name="name" [(ngModel)]="data_user.name"
+                                autofocus [disabled]="disable_inlog">
+                            <mat-hint align="start" style="color: #f44336;" *ngIf="data_user_error.name">
+                                {{data_user_error.name}}</mat-hint>
+                            <mat-icon matSuffix>person</mat-icon>
                         </mat-form-field>
-                        -->
                         <mat-form-field appearance="outline" class="form_control">
-                            <mat-label>Usuario</mat-label>
-                            <input type="text" matInput placeholder="Usuario" name="username"
-                                [(ngModel)]="data_login.username" autofocus [disabled]="disable_inlog">
-                            <mat-hint align="start" style="color: #f44336;" *ngIf="err_input_user">
-                                {{err_input_user}}</mat-hint>
-                            <mat-icon matSuffix>account_circle</mat-icon>
-
+                            <mat-label>Correo Electrónico</mat-label>
+                            <input type="email" matInput name="email" [(ngModel)]="data_user.email"
+                                placeholder="Correo Electrónico" [disabled]="disable_inlog">
+                            <mat-hint align="start" style="color: #f44336;" *ngIf="data_user_error.email">
+                                {{data_user_error.email}}</mat-hint>
+                            <mat-icon matSuffix>mail</mat-icon>
                         </mat-form-field>
-
                         <mat-form-field appearance="outline" class="form_control">
-                            <mat-label>Contraseña</mat-label>
-                            <input matInput [type]="hide ? 'password' : 'text'" placeholder="Contraseña" name="password"
-                                [(ngModel)]="data_login.password" [disabled]="disable_inlog">
-                            <mat-hint align="start" style="color: #f44336;" *ngIf="err_input_pass">
-                                {{err_input_pass}}</mat-hint>
-                            <button [disabled]="disable_inlog" type="button" mat-icon-button matSuffix
-                                (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                                <mat-icon>{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-                            </button>
+                            <mat-label>Teléfono</mat-label>
+                            <input type="text" matInput placeholder="Teléfono" name="phone"
+                                [(ngModel)]="data_user.phone" [disabled]="disable_inlog">
+                            <mat-hint align="start" style="color: #f44336;" *ngIf="data_user_error.phone">
+                                {{data_user_error.phone}}</mat-hint>
+                            <mat-icon matSuffix>call</mat-icon>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="form_control">
+                            <mat-label>Dirección</mat-label>
+                            <input type="text" matInput placeholder="Dirección" name="direction"
+                                [(ngModel)]="data_user.direction" [disabled]="disable_inlog">
+                            <mat-hint align="start" style="color: #f44336;" *ngIf="data_user_error.direction">
+                                {{data_user_error.direction}}</mat-hint>
+                            <mat-icon matSuffix>location_on</mat-icon>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="form_control">
+                            <mat-label>País</mat-label>
+                            <input type="text" matInput placeholder="País" name="country"
+                                [(ngModel)]="data_user.country" [disabled]="disable_inlog">
+                            <mat-hint align="start" style="color: #f44336;" *ngIf="data_user_error.country">
+                                {{data_user_error.country}}</mat-hint>
+                            <mat-icon matSuffix>public</mat-icon>
                         </mat-form-field>
                         <mat-checkbox [disabled]="disable_inlog" color="primary" class="check_form_control"
                             name="save_session" [(ngModel)]="permnent_session" labelPosition="before">
                             Recordarme </mat-checkbox>
                         <button [disabled]="disable_inlog" type="submit" mat-stroked-button color="primary"
                             class="form_control btn_form_control">
-                            Iniciar Sesión
+                            Iniciar
                         </button>
                     </form>
                     <button disabled *ngIf="disable_inlog" class="link__login" (click)="changeForm()">Crear
                         Usuario</button>
-                    <button *ngIf="!disable_inlog" class="link__login" (click)="changeForm()">Crear Usuario</button>
+                    <button *ngIf="!disable_inlog" class="link__login" (click)="changeForm()">Crear Cuenta</button>
                 </div>
                 <mat-progress-bar *ngIf="disable_inlog" mode="indeterminate"></mat-progress-bar>
             </div>
