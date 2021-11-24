@@ -21,10 +21,7 @@ export class LicenseService {
 
   postLicense(license: ParamsLicense) {
     let params = JSON.stringify(license);
-    
     let headers = new HttpHeaders({"Content-Type": "application/json"});
-
     return this._http.post(this.url + "License",params,{headers: headers}); 
   }
-
 }
