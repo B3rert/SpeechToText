@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { VoiceRecognitionService } from '../service/voice-recognition.service'
 import { PrintService } from '../service/print.service'
+import { LicenseService } from '../service/license.service'
 import { DataPrint } from '../interfaces/settinges.interface'
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -22,6 +23,7 @@ import { DialogFormatComponent } from '../component/dialog/dialog-format/dialog-
 import { Language } from '../interfaces/languages.interface';
 import { Login } from '../interfaces/login.interface';
 import { CreateUser } from '../interfaces/create-user.interface';
+import { License } from '../interfaces/license.interface';
 /** */
 
 declare var configuraciones: any;
@@ -57,6 +59,7 @@ export const MY_FORMATS = {
   providers: [
     VoiceRecognitionService,
     PrintService,
+    LicenseService,
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
@@ -146,6 +149,7 @@ export class SpeechToTextComponent implements OnInit {
   constructor(
     public service: VoiceRecognitionService,
     private _printService: PrintService,
+    private _licenseService: LicenseService,
     private dialog: MatDialog,
     private http: HttpClient
   ) {
@@ -350,7 +354,7 @@ export class SpeechToTextComponent implements OnInit {
     //await this.generateBase64('/assets/img/empresa_logo.jpg');
     this.logo_empresa = this.imageBase64;
 
-   // await this.generateBase64('/assets/img/demosoft.jpg');
+    // await this.generateBase64('/assets/img/demosoft.jpg');
     await this.generateBase64('/app/img/demosoft.jfif');
     this.logo_desarrollador = this.imageBase64;
     // this.stopService();
@@ -808,7 +812,7 @@ export class SpeechToTextComponent implements OnInit {
   disable_inlog = false;
 
   //Boton login Form submit
-  login() {
+ async login() {
 
     if (!this.data_login.username) {
       this.err_input_user = "Usuario requerido";
@@ -824,8 +828,6 @@ export class SpeechToTextComponent implements OnInit {
     if (this.data_login.username && this.data_login.password) {
 
       //vericar si las credenciales son correctas
-
-
       console.log(this.generateUUID());
       console.log(this.generateUUID().length);
       console.log(this.data_login);
@@ -842,6 +844,16 @@ export class SpeechToTextComponent implements OnInit {
 
       this.disable_inlog = true;
 
+
+      console.log("llegue aquí");
+      
+     
+      await this.getLicense("2316011926df4daabdde334213bc25e9");
+
+      console.log("y tambien aquí");
+
+
+      return;
       setTimeout(() => {
         this.disable_inlog = false;
         this.data_login.password = "";
@@ -860,6 +872,24 @@ export class SpeechToTextComponent implements OnInit {
     this.is_register ? this.is_register = false : this.is_register = true;
   }
 
+  async getLicense(license:string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this._licenseService.getLicense(license).subscribe(
+        res => {
+
+          let _license:License[] = <License[]>res;
+          console.log(_license);
+          
+          console.log(_license[0].fecha_Vencimiento);
+          resolve();
+        },
+        err => {
+          console.log(err);
+          resolve();
+        }
+      );
+    });
+  }
 
 
 
