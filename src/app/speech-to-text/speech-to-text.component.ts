@@ -73,11 +73,6 @@ export const MY_FORMATS = {
 })
 export class SpeechToTextComponent implements OnInit {
 
-  data_login: Login = {
-    username: "",
-    password: ""
-  }
-
   data_new_user: CreateUser = {
     name: "",
     lastname: "",
@@ -108,8 +103,6 @@ export class SpeechToTextComponent implements OnInit {
   }
 
   hide = true;
-  err_input_user: string = "";
-  err_input_pass: string = "";
 
 
   date = new FormControl(moment());
@@ -833,23 +826,46 @@ export class SpeechToTextComponent implements OnInit {
   //Boton login Form submit
   async login() {
 
-    if (!this.data_login.username) {
-      this.err_input_user = "Usuario requerido";
+    let re = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+
+    let re_phone = /^[0-9]+$/;
+
+    if (!this.data_user.name) {
+      this.data_user_error.name = "Nombre requerido";
     } else {
-      this.err_input_user = "";
+      this.data_user_error.name = "";
     }
-    if (!this.data_login.password) {
-      this.err_input_pass = "Contraseña requerida";
+    if (!this.data_user.email) {
+      this.data_user_error.email = "Correo electrónico requerido";
+    } else if (!re.exec(this.data_user.email)) {
+      this.data_user_error.email = "Correo electronico invalido";
     } else {
-      this.err_input_pass = "";
+      this.data_user_error.email = "";
+    }
+    if (!this.data_user.phone) {
+      this.data_user_error.phone = "Teléfono requerido";
+    } else if (!re_phone.exec(this.data_user.phone)) {
+      this.data_user_error.phone = "Teléfono invalido";
+    }else{
+      this.data_user_error.phone = "";
+    }
+    if (!this.data_user.direction) {
+      this.data_user_error.direction = "Dirección requerida";
+    }else{
+      this.data_user_error.direction = "";
+    }
+    if (!this.data_user.country) {
+      this.data_user_error.country = "País requerido";
+    }else{
+      this.data_user_error.country = "";
     }
 
-    if (this.data_login.username && this.data_login.password) {
+    if (!this.data_user_error.name && !this.data_user_error.email && !this.data_user_error.phone && !this.data_user_error.direction && !this.data_user_error.country) {
 
       //vericar si las credenciales son correctas
       console.log(this.generateUUID());
       console.log(this.generateUUID().length);
-      console.log(this.data_login);
+      console.log(this.data_user);
 
       //las credenciales son correctas
 
@@ -882,8 +898,13 @@ export class SpeechToTextComponent implements OnInit {
 
 
       setTimeout(() => {
-        this.disable_inlog = false;
-        this.data_login.password = "";
+        this.data_user  = {
+          name: "",
+          email: "",
+          phone: "",
+          direction: "",
+          country: ""
+        }
         this.is_login = true;
       }, 3000);
 

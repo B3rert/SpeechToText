@@ -20,11 +20,12 @@
 <div class="container pad_top" *ngIf="!is_login && !is_register">
     <div class="row">
         <div class="col-md-5 mx-auto">
+            <h6 style="color: #3f51b5;">Activar Producto</h6>
             <div class="card text-center">
                 <div class="card-body">
                     <form #loginForm="ngForm" (ngSubmit)="login()">
                         <mat-form-field appearance="outline" class="form_control">
-                            <mat-label>Nombre</mat-label>
+                            <mat-label>Nombre Completo</mat-label>
                             <input type="text" matInput placeholder="Nombre" name="name" [(ngModel)]="data_user.name"
                                 autofocus [disabled]="disable_inlog">
                             <mat-hint align="start" style="color: #f44336;" *ngIf="data_user_error.name">
