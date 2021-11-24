@@ -86,6 +86,23 @@ export class SpeechToTextComponent implements OnInit {
     email: "",
   }
 
+  //Craer cuenta
+  new_data_user: DataUser = {
+    name: "",
+    email: "",
+    phone: "",
+    direction: "",
+    country: ""
+  }
+  new_data_user_error: DataUser = {
+    name: "",
+    email: "",
+    phone: "",
+    direction: "",
+    country: ""
+  }
+
+  //Consultar Cuenta
   data_user: DataUser = {
     name: "",
     email: "",
