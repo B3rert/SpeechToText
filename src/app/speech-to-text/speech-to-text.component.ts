@@ -3,6 +3,7 @@ import { VoiceRecognitionService } from '../service/voice-recognition.service'
 import { PrintService } from '../service/print.service'
 import { LicenseService } from '../service/license.service'
 import { DataPrint } from '../interfaces/settinges.interface'
+import { CUUID } from '../interfaces/uuid.interface'
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { MatDialog } from '@angular/material/dialog';
@@ -35,6 +36,7 @@ import * as _moment from 'moment';
 import { default as _rollupMoment } from 'moment';
 import { FormControl } from '@angular/forms';
 import { DialogDateComponent } from '../component/dialog/dialog-date/dialog-date.component';
+import { ParamsLicense } from '../interfaces/params-license.interface';
 
 const moment = _rollupMoment || _moment;
 
@@ -812,7 +814,9 @@ export class SpeechToTextComponent implements OnInit {
   disable_inlog = false;
 
   //Boton login Form submit
- async login() {
+  async login() {
+    
+
 
     if (!this.data_login.username) {
       this.err_input_user = "Usuario requerido";
@@ -845,15 +849,23 @@ export class SpeechToTextComponent implements OnInit {
       this.disable_inlog = true;
 
 
-      console.log("llegue aquí");
+      let newLicense: ParamsLicense = {
+        empresa_L: 4,
+        cuenta_correntista: 4,
+        cuenta_cta: "string",
+        application: 1,
+        fecha_Vencimiento: "2021-11-25T18:00:44.206Z",
+        orden: 1,
+        userName: "string"
+      }
+  
+      console.log("Trabajar aqui funciones");
       
-     
-      await this.getLicense("2316011926df4daabdde334213bc25e9");
-
-      console.log("y tambien aquí");
-
-
       return;
+      await this.postLicense(newLicense);
+      await this.getLicense("e99570e3be3942c59d11b33b3e8cb59e");
+
+      
       setTimeout(() => {
         this.disable_inlog = false;
         this.data_login.password = "";
@@ -872,14 +884,14 @@ export class SpeechToTextComponent implements OnInit {
     this.is_register ? this.is_register = false : this.is_register = true;
   }
 
-  async getLicense(license:string): Promise<void> {
+  async getLicense(license: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this._licenseService.getLicense(license).subscribe(
         res => {
 
-          let _license:License[] = <License[]>res;
+          let _license: License[] = <License[]>res;
           console.log(_license);
-          
+
           console.log(_license[0].fecha_Vencimiento);
           resolve();
         },
@@ -891,7 +903,21 @@ export class SpeechToTextComponent implements OnInit {
     });
   }
 
-
+  async postLicense(license: ParamsLicense): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this._licenseService.postLicense(license).subscribe(
+        res => {
+          let UUID:CUUID = <CUUID>res;
+          console.log(UUID);
+          resolve();
+        },
+        err => {
+          console.log(err);
+          resolve();
+        }
+      );
+    });
+  }
 
   createUser() {
 
