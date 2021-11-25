@@ -11,8 +11,9 @@ Transcripción voz a texto en varios idiomas, es posible editar el texto y/o imp
 
 ## Caracteristicas
 
-* Las palabras `coma` y `punto y coma` son remplazadas por `,` y `;` respectivamente
-* La plabra `enter` inserta un salto de linea.
+* Soporte para varios lenguajes de entrada, por defecto es español de Guatemala (es-GT).
+* Las palabras `coma` y `punto y coma` son remplazadas por `,` y `;` respectivamente.
+* La palabra `enter` inserta un salto de linea.
 * El botón `Iniciar` inicia el reconocimiento de voz, cuando el reconocimineto está activo este botón cambia a pausar que como lo indica el texto detine el reconocimiento.
 * El botón `Eliminar` elimina el texto reconocido.
 * El botón `Nueva grabación` elimina el texto reconocido e inicia una nueva grabación.
@@ -20,7 +21,7 @@ Transcripción voz a texto en varios idiomas, es posible editar el texto y/o imp
 * El botón `Imprimir` genera un documento pdf para posteriormente ser impreso.
 
 ## Cómo usar.
-
+0. Seleccione un idioma de entrada si lo desea.
 1. Inicie una grabación con el boton iniciar.
 2. Indique con la voz el texto que quiera transcribir.
 3. Detenga la grabacion.
