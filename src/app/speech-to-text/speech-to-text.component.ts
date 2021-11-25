@@ -896,7 +896,6 @@ export class SpeechToTextComponent implements OnInit {
 
       this.disable_inlog = true;
 
-
       let newLicense: ParamsLicense = {
         empresa_L: 4,
         cuenta_correntista: 6,
