@@ -5,7 +5,7 @@ Reconocimiento de voz usando webkitSpeechRecognition y Angular.
 ## Descripción
 Transcripción voz a texto en varios idiomas, es posible editar el texto y/o imprimirlo.
 
-## Vista Previa
+## Vista Previa 
 
 ![Screenshot](speech.png)
 
